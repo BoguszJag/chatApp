@@ -1,0 +1,86 @@
+import React, { useState, ChangeEvent } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
+import '../style.css';
+import useAuth from '../hooks/useAuthContext';
+
+
+function LoginForm() {
+  const [input, setInput] = useState<loginCredentials>({email: "", password: ""});
+  const [credentialsError, setCredentialsError] = useState<credsError>();
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+
+  type credsError = string | null;
+
+  type loginCredentials = {
+    email: string,
+    password: string
+  };
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    setInput(prev => {
+      return {...prev, [name]: value}
+    });
+  };
+
+  async function handleSubmit() {
+    if(input.email.length === 0 || input.password.length === 0) {
+      setCredentialsError('Please fill out the form')
+
+  } else {
+      setCredentialsError(null)
+
+      const data = {username: input.email, password: input.password}
+
+      try {
+        const response = await fetch('/login', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type':'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(res => res.json());
+
+        // console.log(response);
+
+        if(response.message) {
+          setCredentialsError(response.message);
+        } else {
+          localStorage.setItem('user', JSON.stringify(response));
+          setAuth({user: response});
+          navigate('/');
+        }
+
+      } catch(err) {
+        console.log(err);
+      }
+  }
+}
+
+  return (
+    <div className='wrapper'>
+      <div className='formContainer bg-white rounded-md shadow-lg h-fit caret-transparent'>
+        <h1 className='text-3xl font-bold my-5 '>Hello</h1>
+        <FormInput inputName={'email'} inputType={'text'} inputValue={input.email} placeholder='Email' onChange={handleChange} />
+        <FormInput inputName={'password'} inputType={'password'} inputValue={input.password} placeholder='Password' onChange={handleChange} />
+        {credentialsError && <p className='px-5 mx-5 text-red-600'>{credentialsError}</p>}
+        <FormButton buttonText='Login' action='/login' onClick={handleSubmit}/>
+        {/* <FormButton buttonText='Check' action='/check' onClick={checkUser}/> */}
+        <div className='mt-auto mb-5 mx-5'>
+          <p>Don't have an account?</p>
+          <Link to={`/register`} className='font-bold flex justify-center'>Register!</Link>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default LoginForm
