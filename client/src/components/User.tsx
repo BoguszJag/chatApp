@@ -11,6 +11,7 @@ function User({id, username, invited, invite}: props) {
 
     function handleClick() {
         invite(username);
+        invited = true;
     };
 
     return (

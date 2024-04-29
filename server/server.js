@@ -126,8 +126,13 @@ app.post('/api/sendInvitation', async (req, res) => {
     console.log(req.body)
     
     try {
-        await db.query('INSERT INTO invites VALUES ($1, $2)', [sender, receiver]);
-        console.log('Invite created');
+        const checkIfInvited = await db.query('SELECT * FROM invites WHERE invitation_sender = $1 AND invitation_receiver = $2', [sender, receiver]);
+        if(checkIfInvited.rows.length > 0) {
+            console.log('User already invited');
+        } else {
+            await db.query('INSERT INTO invites VALUES ($1, $2)', [sender, receiver]);
+            console.log('Invite created');
+        }
     } catch (err) {
         console.log(err);
     };
