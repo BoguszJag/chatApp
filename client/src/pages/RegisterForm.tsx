@@ -39,7 +39,7 @@ function RegisterForm() {
       const data = {email: input.email, username:input.username, password: input.password};
 
       try {
-        const response = await fetch('/register', {
+        const response = await fetch('/api/register', {
           method: 'POST',
           headers: {
             'Content-Type':'application/json',

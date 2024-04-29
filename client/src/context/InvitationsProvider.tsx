@@ -11,7 +11,7 @@ export const InvitationsContextProvider = ({ children }: any) => {
         const check = await checkAuth();
         if(check) {
             try {
-                const response = await fetch('/getReceivedInvites', {
+                const response = await fetch('/api/getReceivedInvites', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
@@ -33,7 +33,7 @@ export const InvitationsContextProvider = ({ children }: any) => {
         const check = await checkAuth();
         if(check) {
             try {
-                await fetch('/getSentInvites', {
+                await fetch('/api/getSentInvites', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {

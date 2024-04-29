@@ -38,7 +38,7 @@ function LoginForm() {
       const data = {username: input.email, password: input.password}
 
       try {
-        const response = await fetch('/login', {
+        const response = await fetch('/api/login', {
           method: 'POST',
           credentials: 'include',
           headers: {

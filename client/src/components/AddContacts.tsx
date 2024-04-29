@@ -18,7 +18,7 @@ function AddContacts() {
         const authCheck = await checkAuth();
         if(authCheck) {
             try {
-                await fetch('/sendInvitation', {
+                await fetch('/api/sendInvitation', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import useInvitations from '../hooks/useInvitationsContext';
 
 type props = {
     handleUsers: React.Dispatch<React.SetStateAction<[] | null>>,
@@ -8,7 +7,6 @@ type props = {
 
 function Search({handleUsers, apiRoute}: props) {
     const [input, setInput] = useState('');
-    const { getSent } = useInvitations();
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         

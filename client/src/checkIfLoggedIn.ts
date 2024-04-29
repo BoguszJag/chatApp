@@ -1,6 +1,6 @@
 async function checkIfLoggedIn(auth: object) {
     try {
-      const response = await fetch('/check', {
+      const response = await fetch('/api/check', {
         method: 'POST',
         credentials: 'include',
         headers: {

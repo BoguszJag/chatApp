@@ -43,17 +43,18 @@ const db = new pg.Client({
 
 db.connect();
 
-app.post('/register', async (req, res) => {
+app.post('/api/register', async (req, res) => {
     const email = await req.body.email;
     const username = await req.body.username;
     const password = await req.body.password;
 
-    console.log(email, password)
-
     try {
-        const checkResult = await db.query('SELECT * FROM users WHERE email = $1', [email])
-        if(checkResult.rows.length > 0) {
+        const checkEmail = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+        const checkUsername = await db.query('SELECT * FROM users WHERE username = $1', [username]);
+        if(checkEmail.rows.length > 0) {
             res.json({ err: 'Account with that email already exists'});
+        } else if (checkUsername.rows.length > 0) {
+            res.json({ err: 'Account with that username already exists'});
         } else {
             bcrypt.hash(password, saltRounds, async (err, hash) => {
                 if (err) {
@@ -65,13 +66,13 @@ app.post('/register', async (req, res) => {
                     res.json({success: true});
                 }
             });
-        }
+        };
     } catch (err) {
     console.log(err)
-}    
-})
+};    
+});
 
-app.post('/login', (req, res, next) => {
+app.post('/api/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if(err) {
             return next(err);
@@ -86,7 +87,7 @@ app.post('/login', (req, res, next) => {
     })(req, res, next);
 })
  
-app.post('/logout', (req, res) => {
+app.post('/api/logout', (req, res) => {
     req.logout(function (err) {
         if (err) {
             return next(err);
@@ -94,7 +95,7 @@ app.post('/logout', (req, res) => {
     })
 })
 
-app.post('/check', (req, res) => {
+app.post('/api/check', (req, res) => {
     if(req.user){
         res.json({res: true})
     } else {
@@ -102,7 +103,7 @@ app.post('/check', (req, res) => {
     };
 });
 
-app.post('/addContacts', async (req, res) => {
+app.post('/api/addContacts', async (req, res) => {
     const username = req.body.searchParams;
 
         try {
@@ -119,7 +120,7 @@ app.post('/addContacts', async (req, res) => {
     
 });
 
-app.post('/sendInvitation', async (req, res) => {
+app.post('/api/sendInvitation', async (req, res) => {
     const sender = req.body.sender;
     const receiver = req.body.receiver;
     console.log(req.body)
@@ -132,7 +133,7 @@ app.post('/sendInvitation', async (req, res) => {
     };
 });
 
-app.post('/getReceivedInvites', async (req, res) => {
+app.post('/api/getReceivedInvites', async (req, res) => {
     const user = req.body.currentUser;
 
     try {
@@ -143,7 +144,7 @@ app.post('/getReceivedInvites', async (req, res) => {
     };
 });
 
-app.post('/getSentInvites', async (req, res) => {
+app.post('/api/getSentInvites', async (req, res) => {
     const user = req.body.currentUser;
 
     try {
