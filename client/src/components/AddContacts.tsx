@@ -44,16 +44,18 @@ function AddContacts() {
   return (
     <div className='w-full'>
         <Search handleUsers={setUsers} apiRoute='/api/addContacts'/>
-        {users && users.map(user => {
-            // console.log(sent.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['id']))
-            if(user['id'] === auth.user['id']) { 
-                return null;
-            } else if(sentInvitations.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['username'])) {
-                return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={true} />
-            } else {
-                return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={false} />
-            }
-        })}
+        <div className='overflow-y-auto'>
+            {users && users.map(user => {
+                // console.log(sent.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['id']))
+                if(user['id'] === auth.user['id']) { 
+                    return null;
+                } else if(sentInvitations.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['username'])) {
+                    return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={true} />
+                } else {
+                    return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={false} />
+                }
+            })}
+        </div>
     </div>
   );
 };

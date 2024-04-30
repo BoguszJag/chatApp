@@ -8,8 +8,7 @@ type props = {
 };
 
 function User({id, username, invited, invite}: props) {
-    const [invitedState, setInvitedState] = useState(invited)
-
+    const [invitedState, setInvitedState] = useState(invited);
 
     function handleClick() {
         invite(username);

@@ -5,7 +5,6 @@ import RegisterForm from './pages/RegisterForm';
 import LoginForm from './pages/LoginForm';
 import App from './pages/App';
 import { AuthContextProvider } from './context/AuthProvider';
-import useAuth from './hooks/useAuthContext';
 import ProtectedRoute from './pages/ProtectedRoute';
 import { InvitationsContextProvider } from './context/InvitationsProvider';
 
