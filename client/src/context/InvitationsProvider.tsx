@@ -6,23 +6,29 @@ const InvitationsContext = createContext<any>({});
 export const InvitationsContextProvider = ({ children }: any) => {
     const { auth, checkAuth } = useAuth();
     const [sentInvitations, setSentInvitations] = useState<Array<{invitation_receiver: string}>>([]);
+    const [invites, setInvites] = useState<Invites>();
 
-    async function getReceived() {
+    type Invites = {
+        receivedInvites: Array<{id: string, username: string}>,
+        sentInvites: Array<{id: string, username: string}>
+    };
+    
+    async function getInvites() {
         const check = await checkAuth();
         if(check) {
             try {
-                const response = await fetch('/api/getReceivedInvites', {
+                await fetch('/api/getInvites', {
                     method: 'POST',
                     credentials: 'include',
                     headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
                     },
                     body: JSON.stringify({currentUser: auth.user.id})
                     })
-                    .then(res => res.json());
+                    .then(res => res.json())
+                    .then(res => setInvites(res))
 
-                    // console.log(response);
+                    console.log(invites);
 
             } catch(err) {
                 console.log(err);
@@ -39,7 +45,7 @@ export const InvitationsContextProvider = ({ children }: any) => {
                     headers: {
                     'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({currentUser: auth.user.username})
+                    body: JSON.stringify({currentUser: auth.user.id})
                     })
                     .then(res => res.json())
                     .then(res => setSentInvitations(res.receivers))
@@ -52,7 +58,7 @@ export const InvitationsContextProvider = ({ children }: any) => {
         }};
 
     return (
-        <InvitationsContext.Provider value={{ getReceived, getSent, sentInvitations }}>
+        <InvitationsContext.Provider value={{ getInvites, getSent, sentInvitations, invites }}>
             {children}
         </InvitationsContext.Provider>
     )

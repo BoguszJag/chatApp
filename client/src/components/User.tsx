@@ -11,7 +11,7 @@ function User({id, username, invited, invite}: props) {
     const [invitedState, setInvitedState] = useState(invited);
 
     function handleClick() {
-        invite(username);
+        invite(id);
         setInvitedState(!invitedState);
     };
 

@@ -25,7 +25,7 @@ function AddContacts() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
                 },
-                body: JSON.stringify({sender: auth.user.username, receiver: receiver})
+                body: JSON.stringify({sender: auth.user.id, receiver: receiver})
                 })
                 .then(res => res.json());
         
@@ -49,7 +49,7 @@ function AddContacts() {
                 // console.log(sent.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['id']))
                 if(user['id'] === auth.user['id']) { 
                     return null;
-                } else if(sentInvitations.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['username'])) {
+                } else if(sentInvitations.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['id'])) {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={true} />
                 } else {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={false} />

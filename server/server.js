@@ -123,6 +123,7 @@ app.post('/api/addContacts', async (req, res) => {
 app.post('/api/sendInvitation', async (req, res) => {
     const sender = req.body.sender;
     const receiver = req.body.receiver;
+    const inviteID = `${sender}+${receiver}`
     console.log(req.body)
     
     try {
@@ -130,7 +131,7 @@ app.post('/api/sendInvitation', async (req, res) => {
         if(checkIfInvited.rows.length > 0) {
             console.log('User already invited');
         } else {
-            await db.query('INSERT INTO invites VALUES ($1, $2)', [sender, receiver]);
+            await db.query('INSERT INTO invites VALUES ($1, $2, $3)', [inviteID, sender, receiver]);
             console.log('Invite created');
         }
     } catch (err) {
@@ -138,12 +139,13 @@ app.post('/api/sendInvitation', async (req, res) => {
     };
 });
 
-app.post('/api/getReceivedInvites', async (req, res) => {
+app.post('/api/getInvites', async (req, res) => {
     const user = req.body.currentUser;
 
     try {
-        const receivedInvites = await db.query('SELECT invitation_sender FROM invites WHERE invitation_receiver = $1', [user]);
-        res.json({senders: receivedInvites.rows});
+        const receivedInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_sender = users.id WHERE invites.invitation_receiver = $1', [user]);
+        const sentInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_receiver = users.id WHERE invites.invitation_sender = $1', [user]);
+        res.json({receivedInvites: receivedInvites.rows, sentInvites: sentInvites.rows});
     } catch(err) {
         console.log(err);
     };
