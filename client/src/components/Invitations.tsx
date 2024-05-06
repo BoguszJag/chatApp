@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import useInvitations from '../hooks/useInvitationsContext'
+import Invitation from './Invitation';
 
 function Invitations() {
   const { getInvites, invites } = useInvitations();
@@ -17,12 +18,12 @@ function Invitations() {
     <div>
       Your invitations:
       {invites && invites.receivedInvites.map((invite: {id: string, username: string}) => {
-        return <div key={invite.id}>{invite.username}</div>
+        return <Invitation id={invite.id} username={invite.username} />
       })}
       <br/>
       Sent invitations:
       {invites && invites.sentInvites.map((invite: {id: string, username: string}) => {
-        return <div key={invite.id}>{invite.username}</div>
+        return <Invitation id={invite.id} username={invite.username} />
       })}
     </div>
   )
