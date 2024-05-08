@@ -28,8 +28,6 @@ export const InvitationsContextProvider = ({ children }: any) => {
                     .then(res => res.json())
                     .then(res => setInvites(res))
 
-                    console.log(invites);
-
             } catch(err) {
                 console.log(err);
             };

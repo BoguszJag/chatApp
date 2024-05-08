@@ -152,16 +152,16 @@ app.post('/api/getInvites', async (req, res) => {
     };
 });
 
-app.post('/api/getSentInvites', async (req, res) => {
-    const user = req.body.currentUser;
+// app.post('/api/getSentInvites', async (req, res) => {
+//     const user = req.body.currentUser;
 
-    try {
-        const sentInvites = await db.query('SELECT invitation_receiver FROM invites WHERE invitation_sender = $1', [user]);
-        if(sentInvites.rows.length > 0) res.json({receivers: sentInvites.rows});
-    } catch(err) {
-        console.log(err);
-    };
-});
+//     try {
+//         const sentInvites = await db.query('SELECT invitation_receiver FROM invites WHERE invitation_sender = $1', [user]);
+//         if(sentInvites.rows.length > 0) res.json({receivers: sentInvites.rows});
+//     } catch(err) {
+//         console.log(err);
+//     };
+// });
 
 
 passport.use(
