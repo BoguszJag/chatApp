@@ -11,7 +11,6 @@ function AddContacts() {
 
     async function handleInvites() {
         await getInvites();
-        // console.log(sentInvitations);
     };
 
     async function sendInvite(receiver: string) {
@@ -46,7 +45,6 @@ function AddContacts() {
         <Search handleUsers={setUsers} apiRoute='/api/addContacts'/>
         <div className='overflow-y-auto'>
             {users && users.map(user => {
-                // sentInvitations.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['id'])
                 if(user['id'] === auth.user['id']) { 
                     return null;
                 } else if(invites.receivedInvites.some((e:{id: string}) => e.id == user['id']) || invites.sentInvites.some((e:{id: string}) => e.id == user['id'])) {

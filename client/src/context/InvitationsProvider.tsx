@@ -5,7 +5,6 @@ const InvitationsContext = createContext<any>({});
 
 export const InvitationsContextProvider = ({ children }: any) => {
     const { auth, checkAuth } = useAuth();
-    // const [sentInvitations, setSentInvitations] = useState<Array<{invitation_receiver: string}>>([]);
     const [invites, setInvites] = useState<Invites>();
 
     type Invites = {
@@ -32,26 +31,6 @@ export const InvitationsContextProvider = ({ children }: any) => {
                 console.log(err);
             };
         }};
-
-    // async function getSent() {
-    //     const check = await checkAuth();
-    //     if(check) {
-    //         try {
-    //             await fetch('/api/getSentInvites', {
-    //                 method: 'POST',
-    //                 credentials: 'include',
-    //                 headers: {
-    //                 'Content-Type': 'application/json',
-    //                 },
-    //                 body: JSON.stringify({currentUser: auth.user.id})
-    //                 })
-    //                 .then(res => res.json())
-    //                 .then(res => setSentInvitations(res.receivers))
-
-    //         } catch(err) {
-    //             console.log(err);
-    //         };
-    //     }};
 
     return (
         <InvitationsContext.Provider value={{ getInvites, invites }}>
