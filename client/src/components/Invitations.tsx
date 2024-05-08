@@ -12,7 +12,7 @@ function Invitations() {
 
   useEffect(() => {
     handleInvitations();
-  },[])
+  },[]);
 
   return (
     <div>

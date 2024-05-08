@@ -7,10 +7,10 @@ import useInvitations from '../hooks/useInvitationsContext';
 function AddContacts() {
     const [users, setUsers] = useState<[] | null>(null);
     const { auth, checkAuth } = useAuth();
-    const { getSent, sentInvitations } = useInvitations();
+    const { getInvites, invites } = useInvitations();
 
-    async function getInvited() {
-        await getSent();
+    async function handleInvites() {
+        await getInvites();
         // console.log(sentInvitations);
     };
 
@@ -29,7 +29,7 @@ function AddContacts() {
                 })
                 .then(res => res.json());
         
-                getInvited();
+                getInvites();
                 
             } catch(err) {
             console.log(err);
@@ -38,7 +38,7 @@ function AddContacts() {
     };
 
     useEffect(() => {
-        getInvited();
+        handleInvites();
     },[])
 
   return (
@@ -46,10 +46,10 @@ function AddContacts() {
         <Search handleUsers={setUsers} apiRoute='/api/addContacts'/>
         <div className='overflow-y-auto'>
             {users && users.map(user => {
-                // console.log(sent.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['id']))
+                // sentInvitations.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['id'])
                 if(user['id'] === auth.user['id']) { 
                     return null;
-                } else if(sentInvitations.some((e:{invitation_receiver: string}) => e.invitation_receiver == user['id'])) {
+                } else if(invites.receivedInvites.some((e:{id: string}) => e.id == user['id']) || invites.sentInvites.some((e:{id: string}) => e.id == user['id'])) {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={true} />
                 } else {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={false} />
