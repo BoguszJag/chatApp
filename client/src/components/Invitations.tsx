@@ -15,15 +15,15 @@ function Invitations() {
   },[]);
 
   return (
-    <div>
-      Your invitations:
+    <div className='w-full'>
+      <p className='px-5'>Your invitations:</p>
       {invites && invites.receivedInvites.map((invite: {id: string, username: string}) => {
-        return <Invitation id={invite.id} username={invite.username} />
+        return <Invitation id={invite.id} username={invite.username} accept={true} />
       })}
       <br/>
-      Sent invitations:
+      <p className='px-5'>Sent invitations:</p>
       {invites && invites.sentInvites.map((invite: {id: string, username: string}) => {
-        return <Invitation id={invite.id} username={invite.username} />
+        return <Invitation id={invite.id} username={invite.username} accept={false} />
       })}
     </div>
   )
