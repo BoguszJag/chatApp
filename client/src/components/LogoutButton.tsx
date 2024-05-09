@@ -28,7 +28,7 @@ function LogoutButton() {
       };
 
   return (
-    <button className='mt-auto w-full h-10' onClick={handleLogout}>Logout</button>
+    <button className='mt-auto w-full h-10 border-y-[1px] border-gray-400 hover:bg-gray-500 hover:text-black' onClick={handleLogout}>Logout</button>
   )
 }
 

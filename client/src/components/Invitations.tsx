@@ -21,7 +21,7 @@ function Invitations() {
         return <Invitation id={invite.id} username={invite.username} accept={true} />
       })}
       <br/>
-      <p className='px-5'>Sent invitations:</p>
+      <p className='px-5 border-t-[1px] border-black'>Sent invitations:</p>
       {invites && invites.sentInvites.map((invite: {id: string, username: string}) => {
         return <Invitation id={invite.id} username={invite.username} accept={false} />
       })}

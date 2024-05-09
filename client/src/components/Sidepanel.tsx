@@ -22,10 +22,10 @@ function Sidepanel() {
   };
 
   return (
-    <div className='flex flex-col justfiy-normal items-start border-r border-solid border-black'>
+    <div className='flex flex-col justfiy-normal items-start border-r border-solid border-gray-400'>
         <div className='flex justify-normal items-start w-full'>
-          <button className='w-full h-10 border-r-[1px] border-b-[1px] border-black' onClick={handleContactsView}>{switchView.viewAddContacts ? 'Contacts' : 'Add Contacts'}</button>
-          <button className='w-full h-10 border-b-[1px] border-black' name='invitations' onClick={handleInvitationsView}>Invitations</button>  
+          <button className='w-full h-10 border-r-[1px] border-b-[1px] border-gray-400' onClick={handleContactsView}>{switchView.viewAddContacts ? 'Contacts' : 'Add Contacts'}</button>
+          <button className='w-full h-10 border-b-[1px] border-gray-400' name='invitations' onClick={handleInvitationsView}>Invitations</button>  
         </div>
         {switchView.viewInvitations ? <Invitations /> : switchView.viewAddContacts ? <AddContacts /> : <Contacts />}
         <LogoutButton />
