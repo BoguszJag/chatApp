@@ -14,9 +14,28 @@ function Invitation({id, username, accept}: props) {
   const { auth } = useAuth();
   const { getInvites } = useInvitations();
 
-  async function cancelInvitation () {
+  async function cancelInvitation() {
     try {
       await fetch('/api/cancelInvitation', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+        },
+        body: JSON.stringify({currentUser: auth.user.id, target: id})
+        })
+        .then(res => res.json())
+        .then(getInvites());
+
+    } catch (err) {
+      console.log(err);
+    };
+  };
+
+  async function addContact() {
+    try {
+      await fetch('/api/addContact', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -37,7 +56,7 @@ function Invitation({id, username, accept}: props) {
     <div key={id} className='flex justify-normal items-center px-5 hover:bg-gray-500 hover:text-black h-12 w-full '>
       {username} 
       <div className='flex ml-auto'>
-        {accept ? <InvitationButton buttonText='Accept' /> : null} <InvitationCancelButton buttonText='X' onClickCancel={cancelInvitation} />
+        {accept ? <InvitationButton buttonText='Accept' onClickAddContact={addContact} /> : null} <InvitationCancelButton buttonText='X' onClickCancel={cancelInvitation} />
       </div>
     </div>
   )

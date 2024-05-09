@@ -152,14 +152,27 @@ app.post('/api/getInvites', async (req, res) => {
 });
 
 app.post('/api/cancelInvitation', async (req, res) => {
-    const user = req.body.currentUser;
+    const currentUser = req.body.currentUser;
     const target = req.body.target;
-    const inviteID_1 = `${user}+${target}`;
-    const inviteID_2 = `${target}+${user}`;
+    const inviteID_1 = `${currentUser}+${target}`;
+    const inviteID_2 = `${target}+${currentUser}`;
 
     try {
         db.query('DELETE FROM invites WHERE id = $1 OR id = $2', [inviteID_1, inviteID_2]);
         res.json({msg:'Success'})
+    } catch (err) {
+        console.log(err);
+    };
+});
+
+app.post('/api/addContact', async (req, res) => {
+    const currentUser = req.body.currentUser;
+    const target = req.body.target;
+    const contactID = `${target}+${currentUser}`;
+
+    try {
+        db.query('INSERT INTO contacts VALUES ($1, $2, $3)', [contactID, currentUser, target]);
+        db.query('DELETE FROM invites WHERE id = $1', [contactID]);
     } catch (err) {
         console.log(err);
     };
