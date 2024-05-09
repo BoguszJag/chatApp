@@ -122,17 +122,16 @@ app.post('/api/addContacts', async (req, res) => {
 
 app.post('/api/sendInvitation', async (req, res) => {
     const currentUser = req.body.sender;
-    const selectedUser = req.body.receiver;
-    const inviteID = `${currentUser}+${selectedUser}`
-    console.log(req.body)
+    const target = req.body.receiver;
+    const inviteID = `${currentUser}+${target}`
     
     try {
-        const checkIfSent = await db.query('SELECT * FROM invites WHERE invitation_sender = $1 AND invitation_receiver = $2', [currentUser, selectedUser]);
-        const checkIfInvited = await db.query('SELECT * FROM invites WHERE invitation_receiver = $1 AND invitation_sender = $2', [currentUser, selectedUser]);
+        const checkIfSent = await db.query('SELECT * FROM invites WHERE invitation_sender = $1 AND invitation_receiver = $2', [currentUser, target]);
+        const checkIfInvited = await db.query('SELECT * FROM invites WHERE invitation_receiver = $1 AND invitation_sender = $2', [currentUser, target]);
         if(checkIfInvited.rows.length > 0 || checkIfSent.rows.length > 0) {
             console.log('User already invited');
         } else {
-            await db.query('INSERT INTO invites VALUES ($1, $2, $3)', [inviteID, sender, receiver]);
+            await db.query('INSERT INTO invites VALUES ($1, $2, $3)', [inviteID, currentUser, target]);
             console.log('Invite created');
         };
     } catch (err) {
@@ -148,6 +147,20 @@ app.post('/api/getInvites', async (req, res) => {
         const sentInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_receiver = users.id WHERE invites.invitation_sender = $1', [user]);
         res.json({receivedInvites: receivedInvites.rows, sentInvites: sentInvites.rows});
     } catch(err) {
+        console.log(err);
+    };
+});
+
+app.post('/api/cancelInvitation', async (req, res) => {
+    const user = req.body.currentUser;
+    const target = req.body.target;
+    const inviteID_1 = `${user}+${target}`;
+    const inviteID_2 = `${target}+${user}`;
+
+    try {
+        db.query('DELETE FROM invites WHERE id = $1 OR id = $2', [inviteID_1, inviteID_2]);
+        res.json({msg:'Success'})
+    } catch (err) {
         console.log(err);
     };
 });
