@@ -47,7 +47,9 @@ function AddContacts() {
             {users && users.map(user => {
                 if(user['id'] === auth.user['id']) { 
                     return null;
-                } else if(invites.receivedInvites.some((e:{id: string}) => e.id == user['id']) || invites.sentInvites.some((e:{id: string}) => e.id == user['id'])) {
+                } else if(invites.receivedInvites.some((e:{id: string}) => e.id == user['id']) 
+                    || invites.sentInvites.some((e:{id: string}) => e.id == user['id']) 
+                    || invites.contacts.some((e:{user_2id: string}) => e.user_2id == user['id'])) {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={true} />
                 } else {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={false} />

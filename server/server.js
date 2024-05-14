@@ -27,9 +27,9 @@ app.use(
     })
 );
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json())
-app.use(express.json())
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -39,7 +39,7 @@ const db = new pg.Client({
     port: process.env.PG_PORT,
     user: process.env.PG_USER,
     database: process.env.PG_DATABASE
-})
+});
 
 db.connect();
 
@@ -64,7 +64,7 @@ app.post('/api/register', async (req, res) => {
                     await db.query('INSERT INTO users (email, password, id, username) VALUES ($1, $2, $3, $4)', [email, hash, userId, username]);
                     
                     res.json({success: true});
-                }
+                };
             });
         };
     } catch (err) {
@@ -85,21 +85,21 @@ app.post('/api/login', (req, res, next) => {
             return res.status(201).json({id: req.user.id, email: req.user.email, username: req.user.username});
         })
     })(req, res, next);
-})
+});
  
 app.post('/api/logout', (req, res) => {
     req.logout(function (err) {
         if (err) {
             return next(err);
-        }
-    })
-})
+        };
+    });
+});
 
 app.post('/api/check', (req, res) => {
     if(req.user){
-        res.json({res: true})
+        res.json({res: true});
     } else {
-        res.json({res: false})
+        res.json({res: false});
     };
 });
 
@@ -112,8 +112,8 @@ app.post('/api/addContacts', async (req, res) => {
                 const usersList = result.rows;
                 res.json({users: usersList});
             } else {
-                res.json({users: null})
-            }
+                res.json({users: null});
+            };
         } catch(err) {
             console.log(err);
         };
@@ -140,12 +140,15 @@ app.post('/api/sendInvitation', async (req, res) => {
 });
 
 app.post('/api/getInvites', async (req, res) => {
-    const user = req.body.currentUser;
+    const currentUser = req.body.currentUser;
+    const checkUser = currentUser+'+';
 
     try {
-        const receivedInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_sender = users.id WHERE invites.invitation_receiver = $1', [user]);
-        const sentInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_receiver = users.id WHERE invites.invitation_sender = $1', [user]);
-        res.json({receivedInvites: receivedInvites.rows, sentInvites: sentInvites.rows});
+        const receivedInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_sender = users.id WHERE invites.invitation_receiver = $1', [currentUser]);
+        const sentInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_receiver = users.id WHERE invites.invitation_sender = $1', [currentUser]);
+        const checkIfAlreadyAdded = await db.query(`SELECT user_2id FROM contacts WHERE id LIKE '%'||$1||'%'`, [checkUser]);
+        console.log(checkIfAlreadyAdded.rows)
+        res.json({receivedInvites: receivedInvites.rows, sentInvites: sentInvites.rows, contacts: checkIfAlreadyAdded.rows});
     } catch(err) {
         console.log(err);
     };
@@ -168,11 +171,13 @@ app.post('/api/cancelInvitation', async (req, res) => {
 app.post('/api/addContact', async (req, res) => {
     const currentUser = req.body.currentUser;
     const target = req.body.target;
-    const contactID = `${target}+${currentUser}`;
+    const contactID_1 = `${target}+${currentUser}`;
+    const contactID_2 = `${currentUser}+${target}`;
 
     try {
-        db.query('INSERT INTO contacts VALUES ($1, $2, $3)', [contactID, currentUser, target]);
-        db.query('DELETE FROM invites WHERE id = $1', [contactID]);
+        db.query('INSERT INTO contacts VALUES ($1, $2, $3)', [contactID_1, target, currentUser]);
+        db.query('INSERT INTO contacts VALUES ($1, $2, $3)', [contactID_2, currentUser, target]);
+        db.query('DELETE FROM invites WHERE id = $1', [contactID_1]);
     } catch (err) {
         console.log(err);
     };
@@ -213,4 +218,4 @@ passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
-app.listen(port, () => {console.log(`Server listening on port ${port}`)})
+app.listen(port, () => {console.log(`Server listening on port ${port}`)});

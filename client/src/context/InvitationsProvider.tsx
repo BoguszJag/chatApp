@@ -9,7 +9,8 @@ export const InvitationsContextProvider = ({ children }: any) => {
 
     type Invites = {
         receivedInvites: Array<{id: string, username: string}>,
-        sentInvites: Array<{id: string, username: string}>
+        sentInvites: Array<{id: string, username: string}>,
+        contacts: Array<{id: string}>
     };
     
     async function getInvites() {
