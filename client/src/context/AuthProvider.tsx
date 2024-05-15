@@ -16,7 +16,7 @@ export const AuthContextProvider = ({ children }: any) => {
   const checkAuth = async () => {
     if(auth) {
       const result =  await checkIfLoggedIn(auth);
-      if(result == false) {
+      if(result === false) {
         setAuth({user: null});
       };
       return result;

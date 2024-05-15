@@ -4,7 +4,7 @@ import useAuth from '../hooks/useAuthContext';
 const InvitationsContext = createContext<any>({});
 
 export const InvitationsContextProvider = ({ children }: any) => {
-    const { auth, checkAuth } = useAuth();
+    const {auth, checkAuth} = useAuth();
     const [invites, setInvites] = useState<Invites>();
 
     type Invites = {

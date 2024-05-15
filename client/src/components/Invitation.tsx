@@ -42,7 +42,7 @@ function Invitation({id, username, accept}: props) {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
         },
-        body: JSON.stringify({currentUser: auth.user.id, target: id})
+        body: JSON.stringify({currentUserID: auth.user.id, currentUserName: auth.user.username, targetID: id, targetName: username})
         })
         .then(res => res.json())
         .then(getInvites());

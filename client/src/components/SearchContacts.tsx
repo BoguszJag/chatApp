@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import useAuth from '../hooks/useAuthContext';
 
 type props = {
     handleUsers: React.Dispatch<React.SetStateAction<[] | null>>,
     apiRoute: string
 };
 
-function Search({handleUsers, apiRoute}: props) {
+function SearchContacts({handleUsers, apiRoute}: props) {
     const [input, setInput] = useState('');
+    const {auth} = useAuth();
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         
@@ -25,7 +27,7 @@ function Search({handleUsers, apiRoute}: props) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
                 },
-                body: JSON.stringify({searchParams: input})
+                body: JSON.stringify({searchParams: input, currentUser: auth.user.id})
                 })
                 .then(res => res.json());
         
@@ -49,4 +51,4 @@ function Search({handleUsers, apiRoute}: props) {
   );
 };
 
-export default Search
+export default SearchContacts

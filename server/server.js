@@ -120,6 +120,24 @@ app.post('/api/addContacts', async (req, res) => {
     
 });
 
+app.post('/api/searchContacts', async (req, res) => {
+    const currentUser = req.body.currentUser;
+    const username = req.body.searchParams;
+
+    try {
+        const result = await db.query(`SELECT user_2id, user_2_name FROM contacts WHERE user_1id = $1 AND user_2_name LIKE '%'||$2||'%'`, [currentUser, username]);
+        if(result.rows.length > 0) {
+            const contactList = result.rows;
+            res.json({users: contactList});
+        } else {
+            res.json({users: null});
+        };
+    } catch (err) {
+        console.log(err);
+    };
+
+});
+
 app.post('/api/sendInvitation', async (req, res) => {
     const currentUser = req.body.sender;
     const target = req.body.receiver;
@@ -147,7 +165,6 @@ app.post('/api/getInvites', async (req, res) => {
         const receivedInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_sender = users.id WHERE invites.invitation_receiver = $1', [currentUser]);
         const sentInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_receiver = users.id WHERE invites.invitation_sender = $1', [currentUser]);
         const checkIfAlreadyAdded = await db.query(`SELECT user_2id FROM contacts WHERE id LIKE '%'||$1||'%'`, [checkUser]);
-        console.log(checkIfAlreadyAdded.rows)
         res.json({receivedInvites: receivedInvites.rows, sentInvites: sentInvites.rows, contacts: checkIfAlreadyAdded.rows});
     } catch(err) {
         console.log(err);
@@ -169,14 +186,16 @@ app.post('/api/cancelInvitation', async (req, res) => {
 });
 
 app.post('/api/addContact', async (req, res) => {
-    const currentUser = req.body.currentUser;
-    const target = req.body.target;
-    const contactID_1 = `${target}+${currentUser}`;
-    const contactID_2 = `${currentUser}+${target}`;
+    const currentUserID = req.body.currentUserID;
+    const currentUserName = req.body.currentUserName
+    const targetID = req.body.targetID;
+    const targetName = req.body.targetName;
+    const contactID_1 = `${targetID}+${currentUserID}`;
+    const contactID_2 = `${currentUserID}+${targetID}`;
 
     try {
-        db.query('INSERT INTO contacts VALUES ($1, $2, $3)', [contactID_1, target, currentUser]);
-        db.query('INSERT INTO contacts VALUES ($1, $2, $3)', [contactID_2, currentUser, target]);
+        db.query('INSERT INTO contacts VALUES ($1, $2, $3, $4, $5)', [contactID_1, targetID, currentUserID, targetName, currentUserName]);
+        db.query('INSERT INTO contacts VALUES ($1, $2, $3, $4, $5)', [contactID_2, currentUserID, targetID, currentUserName, targetName]);
         db.query('DELETE FROM invites WHERE id = $1', [contactID_1]);
     } catch (err) {
         console.log(err);
