@@ -11,7 +11,7 @@ function ProtectedRoute() {
 
     useEffect(() => {
         checkAuth();
-    }, []) 
+    }, [checkAuth]) 
 
     return !auth ? <Navigate to={redirectRoute}/> : <Outlet/>
     

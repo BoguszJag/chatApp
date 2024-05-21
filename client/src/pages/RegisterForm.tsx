@@ -68,7 +68,7 @@ function RegisterForm() {
   return (
     <div className='wrapper'>
       <div className='formContainer bg-white rounded-md shadow-lg h-fit caret-transparent'>
-        <h1 className='text-3xl font-bold my-5 '>Hello</h1>
+        <h1 className='text-3xl font-bold my-5 '>Register</h1>
         <FormInput inputName={'email'} inputType={'text'} inputValue={input.email} placeholder='Email' onChange={handleChange} />
         <FormInput inputName={'username'} inputType={'text'} inputValue={input.username} placeholder='Username' onChange={handleChange} />
         <FormInput inputName={'password'} inputType={'password'} inputValue={input.password} placeholder='Password' onChange={handleChange} />

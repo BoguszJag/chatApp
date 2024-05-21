@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import InvitationButton from './InvitationButton'
 import InvitationCancelButton from './InvitationCancelButton'
 import useAuth from '../hooks/useAuthContext'
-import useInvitations from '../hooks/useInvitationsContext'
 
 type props = {
     id: string,

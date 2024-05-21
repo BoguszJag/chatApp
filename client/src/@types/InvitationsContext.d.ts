@@ -1,5 +1,4 @@
 // @types.InvitationsContext.ts
-import React from "react";
 
 export type Invites = {
     receivedInvites: Array<{id: string, username: string}>,
