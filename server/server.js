@@ -125,7 +125,7 @@ app.post('/api/searchContacts', async (req, res) => {
     const username = req.body.searchParams;
 
     try {
-        const result = await db.query(`SELECT user_2id, user_2_name FROM contacts WHERE user_1id = $1 AND user_2_name LIKE '%'||$2||'%'`, [currentUser, username]);
+        const result = await db.query(`SELECT user_2id AS id, user_2_name AS username FROM contacts WHERE user_1id = $1 AND user_2_name LIKE '%'||$2||'%'`, [currentUser, username]);
         if(result.rows.length > 0) {
             const contactList = result.rows;
             res.json({users: contactList});
@@ -164,7 +164,7 @@ app.post('/api/getInvites', async (req, res) => {
     try {
         const receivedInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_sender = users.id WHERE invites.invitation_receiver = $1', [currentUser]);
         const sentInvites = await db.query('SELECT users.id, username FROM users INNER JOIN invites ON invites.invitation_receiver = users.id WHERE invites.invitation_sender = $1', [currentUser]);
-        const checkIfAlreadyAdded = await db.query(`SELECT user_2id FROM contacts WHERE id LIKE '%'||$1||'%'`, [checkUser]);
+        const checkIfAlreadyAdded = await db.query(`SELECT user_2id AS id FROM contacts WHERE id LIKE '%'||$1||'%'`, [checkUser]);
         res.json({receivedInvites: receivedInvites.rows, sentInvites: sentInvites.rows, contacts: checkIfAlreadyAdded.rows});
     } catch(err) {
         console.log(err);

@@ -21,7 +21,7 @@ function Contacts() {
         <SearchContacts handleInputChange={setInputChange} handleUsers={setContacts} apiRoute='/api/searchContacts'/>
         <div className='overflow-y-auto'>
           {contacts && contacts.map(contact => {
-            return <Contact key={contact['user_2id']} id={contact['user_2id']} username={contact['user_2_name']}/>
+            return <Contact key={contact['id']} id={contact['id']} username={contact['username']}/>
           })}
         </div>
     </div>

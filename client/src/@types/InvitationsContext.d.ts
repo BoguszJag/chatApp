@@ -3,7 +3,7 @@
 export type Invites = {
     receivedInvites: Array<{id: string, username: string}>,
     sentInvites: Array<{id: string, username: string}>,
-    contacts: Array<{user_2id: string}>
+    contacts: Array<{id: string}>
 };
 
 export type InvitationsContextType = {
