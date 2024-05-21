@@ -1,21 +1,16 @@
 import React, { createContext, useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuthContext';
+import { InvitationsContextType, Invites } from '../@types/InvitationsContext';
 
-const InvitationsContext = createContext<any>({});
+const InvitationsContext = createContext<InvitationsContextType | null>(null);
 
-export const InvitationsContextProvider = ({ children }: any) => {
+export const InvitationsContextProvider:  React.FC<{children: React.ReactNode}> = ({children}) => {
     const {auth, checkAuth} = useAuth();
-    const [invites, setInvites] = useState<Invites>();
-
-    type Invites = {
-        receivedInvites: Array<{id: string, username: string}>,
-        sentInvites: Array<{id: string, username: string}>,
-        contacts: Array<{id: string}>
-    };
+    const [invites, setInvites] = useState<Invites | null>(null);
     
     async function getInvites() {
-        const check = await checkAuth();
-        if(check) {
+        await checkAuth();
+        if(auth) {
             try {
                 await fetch('/api/getInvites', {
                     method: 'POST',
@@ -23,7 +18,7 @@ export const InvitationsContextProvider = ({ children }: any) => {
                     headers: {
                     'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({currentUser: auth.user.id})
+                    body: JSON.stringify({currentUser: auth.id})
                     })
                     .then(res => res.json())
                     .then(res => setInvites(res))

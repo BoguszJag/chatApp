@@ -3,16 +3,7 @@ import useInvitations from '../hooks/useInvitationsContext'
 import Invitation from './Invitation';
 
 function Invitations() {
-  const { getInvites, invites } = useInvitations();
-
-
-  async function handleInvitations() {
-    await getInvites();
-  };
-
-  useEffect(() => {
-    handleInvitations();
-  },[invites]);
+  const {invites} = useInvitations();
 
   return (
     <div className='w-full'>

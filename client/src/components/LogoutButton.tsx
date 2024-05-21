@@ -19,7 +19,7 @@ function LogoutButton() {
           });
     
           localStorage.clear();
-          setAuth({user: null});
+          setAuth(null);
           navigate('/login');
     
         } catch(err) {

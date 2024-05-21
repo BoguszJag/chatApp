@@ -8,14 +8,15 @@ function AddContacts() {
     const [users, setUsers] = useState<[] | null>(null);
     const {auth, checkAuth} = useAuth();
     const {getInvites, invites} = useInvitations();
+    const [inputChange, setInputChange] = useState<string>('');
 
     async function handleInvites() {
         await getInvites();
     };
 
     async function sendInvite(receiver: string) {
-        const authCheck = await checkAuth();
-        if(authCheck) {
+        await checkAuth();
+        if(auth) {
             try {
                 await fetch('/api/sendInvitation', {
                 method: 'POST',
@@ -24,11 +25,11 @@ function AddContacts() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
                 },
-                body: JSON.stringify({sender: auth.user.id, receiver: receiver})
+                body: JSON.stringify({sender: auth.id, receiver: receiver})
                 })
                 .then(res => res.json());
         
-                getInvites();
+                await handleInvites();
                 
             } catch(err) {
             console.log(err);
@@ -38,18 +39,18 @@ function AddContacts() {
 
     useEffect(() => {
         handleInvites();
-    });
+    },[inputChange]);
 
   return (
     <div className='w-full'>
-        <Search handleUsers={setUsers} apiRoute='/api/addContacts'/>
+        <Search handleInputChange={setInputChange} handleUsers={setUsers} apiRoute='/api/addContacts'/>
         <div className='overflow-y-auto'>
             {users && users.map(user => {
-                if(user['id'] === auth.user['id']) { 
+                if(auth && user['id'] === auth.id) { 
                     return null;
-                } else if(invites.receivedInvites.some((e:{id: string}) => e.id === user['id']) 
-                    || invites.sentInvites.some((e:{id: string}) => e.id === user['id']) 
-                    || invites.contacts.some((e:{user_2id: string}) => e.user_2id === user['id'])) {
+                } else if(invites && invites.receivedInvites.some((e:{id: string}) => e.id === user['id']) 
+                    || invites && invites.sentInvites.some((e:{id: string}) => e.id === user['id']) 
+                    || invites && invites.contacts.some((e:{user_2id: string}) => e.user_2id === user['id'])) {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={true} />
                 } else {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={false} />

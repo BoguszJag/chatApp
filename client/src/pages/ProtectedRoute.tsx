@@ -13,7 +13,7 @@ function ProtectedRoute() {
         checkAuth();
     }, []) 
 
-    return !auth.user ? <Navigate to={redirectRoute}/> : <Outlet/>
+    return !auth ? <Navigate to={redirectRoute}/> : <Outlet/>
     
 }
 

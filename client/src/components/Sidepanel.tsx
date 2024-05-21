@@ -3,9 +3,11 @@ import Contacts from './Contacts';
 import AddContacts from './AddContacts';
 import LogoutButton from './LogoutButton';
 import Invitations from './Invitations';
+import useInvitations from '../hooks/useInvitationsContext';
 
 function Sidepanel() {
   const [switchView, setSwitchView] = useState({viewAddContacts: false, viewInvitations: false});
+  const {getInvites} = useInvitations();
 
   function handleContactsView() {
     if(switchView.viewInvitations === true) {
@@ -19,6 +21,10 @@ function Sidepanel() {
     setSwitchView(prev => {
       return {...prev, viewInvitations: !switchView.viewInvitations}
     });
+  };
+
+  if(switchView.viewInvitations) {
+    getInvites();
   };
 
   return (

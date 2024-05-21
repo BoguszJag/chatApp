@@ -1,23 +1,18 @@
 import React, { createContext, useState } from 'react'
 import checkIfLoggedIn from '../checkIfLoggedIn';
+import { AuthContextType, User } from '../@types/AuthContext';
 
-const AuthContext = createContext<any>({});
+const AuthContext = createContext<AuthContextType | null>(null);
 
-export const AuthContextProvider = ({ children }: any) => {
-  const [auth, setAuth] = useState({user: localStorage.getItem('user') || null});
-
-  let currentUser = auth.user;
-
-  if(typeof currentUser === 'string') {
-    currentUser = JSON.parse(currentUser);
-    setAuth({user: currentUser})
-  };
+export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
+  const [auth, setAuth] = useState<User | null>(null);
+  //const [auth, setAuth] = useState({user: localStorage.getItem('user') || null});
 
   const checkAuth = async () => {
     if(auth) {
       const result =  await checkIfLoggedIn(auth);
       if(result === false) {
-        setAuth({user: null});
+        setAuth(null);
       };
       return result;
     };

@@ -5,21 +5,20 @@ import Contact from './Contact';
 
 function Contacts() {
     const [contacts, setContacts] = useState<[] | null>(null);
-    const {getInvites, invites} = useInvitations(); 
+    const {getInvites} = useInvitations(); 
+    const [inputChange, setInputChange] = useState<string>('');
 
     async function handleInvites() {
       await getInvites();
     };
 
-
-
     useEffect(() => {
       handleInvites();
-    });
+    },[inputChange]);
 
   return (
     <div className='w-full'>
-        <SearchContacts handleUsers={setContacts} apiRoute='/api/searchContacts'/>
+        <SearchContacts handleInputChange={setInputChange} handleUsers={setContacts} apiRoute='/api/searchContacts'/>
         <div className='overflow-y-auto'>
           {contacts && contacts.map(contact => {
             return <Contact key={contact['user_2id']} id={contact['user_2id']} username={contact['user_2_name']}/>

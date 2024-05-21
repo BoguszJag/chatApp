@@ -27,6 +27,7 @@
     "src/pages",
     "src/context",
     "src/hooks",
-    "public/images"
+    "public/images",
+    "src/@types"
   ]
 }

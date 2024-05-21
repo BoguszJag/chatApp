@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import InvitationButton from './InvitationButton'
 import InvitationCancelButton from './InvitationCancelButton'
 import useAuth from '../hooks/useAuthContext'
@@ -12,43 +12,44 @@ type props = {
 
 function Invitation({id, username, accept}: props) {
   const { auth } = useAuth();
-  const { getInvites } = useInvitations();
 
   async function cancelInvitation() {
-    try {
-      await fetch('/api/cancelInvitation', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-        },
-        body: JSON.stringify({currentUser: auth.user.id, target: id})
-        })
-        .then(res => res.json())
-        .then(getInvites());
+    if(auth) {
+      try {
+        await fetch('/api/cancelInvitation', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+          },
+          body: JSON.stringify({currentUser: auth.id, target: id})
+          })
+          .then(res => res.json());
 
-    } catch (err) {
-      console.log(err);
+      } catch (err) {
+        console.log(err);
+      };
     };
   };
 
   async function addContact() {
-    try {
-      await fetch('/api/addContact', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-        },
-        body: JSON.stringify({currentUserID: auth.user.id, currentUserName: auth.user.username, targetID: id, targetName: username})
-        })
-        .then(res => res.json())
-        .then(getInvites());
+    if(auth) {
+      try {
+        await fetch('/api/addContact', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+          },
+          body: JSON.stringify({currentUserID: auth.id, currentUserName: auth.username, targetID: id, targetName: username})
+          })
+          .then(res => res.json())
 
-    } catch (err) {
-      console.log(err);
+      } catch (err) {
+        console.log(err);
+      };
     };
   };
 

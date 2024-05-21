@@ -60,8 +60,8 @@ app.post('/api/register', async (req, res) => {
                 if (err) {
                     console.log('Error while hashing password:', err)
                 } else {
-                    const userId = uuidv4();
-                    await db.query('INSERT INTO users (email, password, id, username) VALUES ($1, $2, $3, $4)', [email, hash, userId, username]);
+                    const userID = uuidv4();
+                    await db.query('INSERT INTO users (email, password, id, username) VALUES ($1, $2, $3, $4)', [email, hash, userID, username]);
                     
                     res.json({success: true});
                 };

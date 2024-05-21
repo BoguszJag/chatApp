@@ -55,7 +55,7 @@ function LoginForm() {
           setCredentialsError(response.message);
         } else {
           localStorage.setItem('user', JSON.stringify(response));
-          setAuth({user: response});
+          setAuth(response);
           navigate('/');
         }
 

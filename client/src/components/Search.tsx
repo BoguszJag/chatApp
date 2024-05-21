@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
 
 type props = {
+    handleInputChange: React.Dispatch<React.SetStateAction<string>>,
     handleUsers: React.Dispatch<React.SetStateAction<[] | null>>,
     apiRoute: string
 };
 
-function Search({handleUsers, apiRoute}: props) {
+function Search({handleInputChange, handleUsers, apiRoute}: props) {
     const [input, setInput] = useState('');
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         
         const value = e.target.value;
         setInput(value);
+        handleInputChange(value);
 
     };
 
@@ -42,7 +44,7 @@ function Search({handleUsers, apiRoute}: props) {
 
     useEffect(() => {
         searchForUsers();
-    });
+    },[input]);
 
   return (
     <input className='w-full h-10 px-5 border-b-[1px] border-gray-400 placholder-gray-400 bg-gray-950' placeholder='Search' onChange={(e) => handleChange(e)} type='text' value={input} name='users' />
