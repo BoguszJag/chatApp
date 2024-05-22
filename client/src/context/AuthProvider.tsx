@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react'
-import checkIfLoggedIn from '../checkIfLoggedIn';
+import checkIfLoggedIn from '../scripts/checkIfLoggedIn';
 import { AuthContextType, User } from '../@types/AuthContext';
 
 const AuthContext = createContext<AuthContextType | null>(null);
