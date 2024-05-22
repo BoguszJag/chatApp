@@ -60,7 +60,7 @@ app.post('/api/register', async (req, res) => {
                 if (err) {
                     console.log('Error while hashing password:', err)
                 } else {
-                    const userID = uuidv4();
+                    const userID = uuidv4().replace(/-/g, '');
                     await db.query('INSERT INTO users (email, password, id, username) VALUES ($1, $2, $3, $4)', [email, hash, userID, username]);
                     
                     res.json({success: true});
@@ -197,6 +197,36 @@ app.post('/api/addContact', async (req, res) => {
         db.query('INSERT INTO contacts VALUES ($1, $2, $3, $4, $5)', [contactID_1, targetID, currentUserID, targetName, currentUserName]);
         db.query('INSERT INTO contacts VALUES ($1, $2, $3, $4, $5)', [contactID_2, currentUserID, targetID, currentUserName, targetName]);
         db.query('DELETE FROM invites WHERE id = $1', [contactID_1]);
+    } catch (err) {
+        console.log(err);
+    };
+});
+
+app.post('/api/getChat', async (req, res) => {
+    const currentUserID = req.body.currentUserID;
+    const contactID = req.body.contactID;
+    const chatID_1 = 'chat_'+currentUserID+contactID;
+    const chatID_2 = 'chat_'+contactID+currentUserID;
+
+    try {
+        const checkIfChatExists = await db.query("SELECT table_name AS name FROM information_schema.tables WHERE table_name = $1 OR table_name = $2", [chatID_1, chatID_2]);
+        const result = checkIfChatExists.rows;
+        if(result.length == 0) {
+            try {
+                await db.query(`CREATE TABLE ${chatID_1} (msg_id varchar(100) NOT NULL UNIQUE, sender_id varchar(100) NOT NULL, date varchar(30), msg_text varchar(1000) NOT NULL)`);
+                const chat = await db.query(`SELECT * FROM ${result[0].name}`);
+                res.json({chat: chat.rows});
+            } catch (err) {
+                console.log(err);
+            };        
+            } else {
+            try {
+                const chat = await db.query(`SELECT * FROM ${result[0].name}`);
+                res.json({chat: chat.rows});
+            } catch (err) {
+                console.log(err);
+            };
+        };
     } catch (err) {
         console.log(err);
     };
