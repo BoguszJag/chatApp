@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Contacts from './Contacts';
 import AddContacts from './AddContacts';
 import LogoutButton from './LogoutButton';
 import Invitations from './Invitations';
 import useInvitations from '../hooks/useInvitationsContext';
+import useContactsChats from '../hooks/useContactsChatsContext';
 
 function Sidepanel() {
   const [switchView, setSwitchView] = useState({viewAddContacts: false, viewInvitations: false});
   const {getInvites} = useInvitations();
+  const {getContactsChats} = useContactsChats();
 
   function handleContactsView() {
     if(switchView.viewInvitations === true) {
@@ -23,9 +25,10 @@ function Sidepanel() {
     });
   };
 
-  if(switchView.viewInvitations) {
+  useEffect(() => {
     getInvites();
-  };
+    getContactsChats();
+  }, [switchView])
 
   return (
     <div className='flex flex-col justfiy-normal items-start border-r border-solid border-gray-400'>

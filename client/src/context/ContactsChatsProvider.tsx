@@ -12,7 +12,7 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
     await checkAuth();
     if(auth) {
       try {
-        const response = await fetch('/api/getContactsChats', {
+        await fetch('/api/getContactsChats', {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -23,7 +23,7 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
           .then(res => res.json())
           .then(res => setContactsChats(res));
 
-          console.log(response);
+          console.log(contactsChats);
 
         } catch(err) {
             console.log(err);

@@ -3,12 +3,14 @@ import useInvitations from '../hooks/useInvitationsContext';
 import SearchContacts from './SearchContacts';
 import Contact from './Contact';
 import useAuth from '../hooks/useAuthContext';
+import useContactsChats from '../hooks/useContactsChatsContext';
 
 function Contacts() {
   const [contacts, setContacts] = useState<[] | null>(null);
   const {getInvites} = useInvitations(); 
   const [inputChange, setInputChange] = useState<string>('');
   const {checkAuth, auth} = useAuth();
+  const {contactsChats} = useContactsChats();
 
   async function handleInvites() {
     await getInvites();
@@ -49,6 +51,8 @@ function Contacts() {
             return <Contact key={contact['id']} id={contact['id']} username={contact['username']} handleChat={getChat}/>
           })}
         </div>
+        {contactsChats && inputChange.length === 0 ? contactsChats.map(contact => {
+          return <Contact key={contact['id']} id={contact['id']} username={contact['username']} handleChat={getChat}/>}) : null }
     </div>
   )
 }
