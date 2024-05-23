@@ -120,24 +120,6 @@ app.post('/api/addContacts', async (req, res) => {
     
 });
 
-app.post('/api/searchContacts', async (req, res) => {
-    const currentUser = req.body.currentUser;
-    const username = req.body.searchParams;
-
-    try {
-        const result = await db.query(`SELECT user_2id AS id, user_2_name AS username FROM contacts WHERE user_1id = $1 AND user_2_name LIKE '%'||$2||'%'`, [currentUser, username]);
-        if(result.rows.length > 0) {
-            const contactList = result.rows;
-            res.json({users: contactList});
-        } else {
-            res.json({users: null});
-        };
-    } catch (err) {
-        console.log(err);
-    };
-
-});
-
 app.post('/api/sendInvitation', async (req, res) => {
     const currentUser = req.body.sender;
     const target = req.body.receiver;
@@ -200,6 +182,24 @@ app.post('/api/addContact', async (req, res) => {
     } catch (err) {
         console.log(err);
     };
+});
+
+app.post('/api/searchContacts', async (req, res) => {
+    const currentUser = req.body.currentUser;
+    const username = req.body.searchParams;
+
+    try {
+        const result = await db.query(`SELECT user_2id AS id, user_2_name AS username, last_msg, msg_date FROM contacts WHERE user_1id = $1 AND user_2_name LIKE '%'||$2||'%'`, [currentUser, username]);
+        if(result.rows.length > 0) {
+            const contactList = result.rows;
+            res.json({users: contactList});
+        } else {
+            res.json({users: null});
+        };
+    } catch (err) {
+        console.log(err);
+    };
+
 });
 
 app.post('/api/getChat', async (req, res) => {
