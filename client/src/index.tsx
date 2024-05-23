@@ -7,6 +7,7 @@ import App from './pages/App';
 import { AuthContextProvider } from './context/AuthProvider';
 import ProtectedRoute from './pages/ProtectedRoute';
 import { InvitationsContextProvider } from './context/InvitationsProvider';
+import { ContactsChatsContextProvider } from './context/ContactsChatsProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,6 +16,7 @@ root.render(
   <React.StrictMode>
     <AuthContextProvider>
       <InvitationsContextProvider>
+      <ContactsChatsContextProvider>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<ProtectedRoute />}>
@@ -24,6 +26,7 @@ root.render(
           <Route path='/register' element={<RegisterForm />}/>
         </Routes>
       </BrowserRouter>
+      </ContactsChatsContextProvider>
       </InvitationsContextProvider>
     </AuthContextProvider>
   </React.StrictMode>

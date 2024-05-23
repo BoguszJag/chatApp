@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useState } from 'react'
 import useAuth from '../hooks/useAuthContext';
 import { InvitationsContextType, Invites } from '../@types/InvitationsContext';
 
@@ -21,7 +21,7 @@ export const InvitationsContextProvider:  React.FC<{children: React.ReactNode}> 
                     body: JSON.stringify({currentUser: auth.id})
                     })
                     .then(res => res.json())
-                    .then(res => setInvites(res))
+                    .then(res => setInvites(res));
 
             } catch(err) {
                 console.log(err);
