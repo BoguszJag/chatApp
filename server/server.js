@@ -232,6 +232,21 @@ app.post('/api/getChat', async (req, res) => {
     };
 });
 
+app.post('/api/getContactsChats', async (req, res) => {
+    const currentUserID = req.body.currentUser;
+
+    try {
+        const result = await db.query('SELECT user_2id AS id, user_2_name AS username, last_msg, msg_date FROM contacts WHERE user_1id = $1', [currentUserID]);
+        if(result.rows.length > 0) {
+            res.json(result.rows);
+        } else {
+            res.json({msg: 'No contacts'});
+        };
+    } catch (err) {
+        console.log(err);
+    };
+});
+
 passport.use(
     'local',
     new Strategy(async function verify(username, password, done) {
