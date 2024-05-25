@@ -23,8 +23,6 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
           .then(res => res.json())
           .then(res => setContactsChats(res));
 
-          console.log(contactsChats);
-
         } catch(err) {
             console.log(err);
         };
