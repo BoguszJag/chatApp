@@ -8,6 +8,7 @@ import { AuthContextProvider } from './context/AuthProvider';
 import ProtectedRoute from './pages/ProtectedRoute';
 import { InvitationsContextProvider } from './context/InvitationsProvider';
 import { ContactsChatsContextProvider } from './context/ContactsChatsProvider';
+import { ChatContextProvider } from './context/ChatProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -17,6 +18,7 @@ root.render(
     <AuthContextProvider>
       <InvitationsContextProvider>
       <ContactsChatsContextProvider>
+      <ChatContextProvider>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<ProtectedRoute />}>
@@ -26,6 +28,7 @@ root.render(
           <Route path='/register' element={<RegisterForm />}/>
         </Routes>
       </BrowserRouter>
+      </ChatContextProvider>
       </ContactsChatsContextProvider>
       </InvitationsContextProvider>
     </AuthContextProvider>
