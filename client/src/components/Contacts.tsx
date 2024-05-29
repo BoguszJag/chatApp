@@ -16,9 +16,9 @@ function Contacts() {
     await getInvites();
   };
 
-    useEffect(() => {
-      handleInvites();
-    },[inputChange]);
+  useEffect(() => {
+    handleInvites();
+  },[inputChange]);
 
   return (
     <div className='w-full'>
