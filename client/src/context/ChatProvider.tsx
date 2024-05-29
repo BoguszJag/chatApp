@@ -1,11 +1,12 @@
 import React, { createContext, useState } from 'react'
 import useAuth from '../hooks/useAuthContext';
+import { chat, ChatContextType } from '../@types/ChatContext';
 
-const ChatContext = createContext<any>({})
+const ChatContext = createContext<ChatContextType | null>(null);
 
 export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
     const {auth, checkAuth} = useAuth();
-    const {chat, setChat} = useState();
+    const [chat, setChat] = useState<chat | null>(null);
 
     async function getChat(contactID: string) {
         await checkAuth();
@@ -23,7 +24,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
               .then(res => res.json())
               .then(res => setChat(res.chat));
                   
-              console.log(response);
+              console.log(chat);
     
             } catch(err) {
                 console.log(err);
@@ -32,7 +33,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
       };
 
   return (
-    <ChatContext.Provider value={{getChat, chat, setChat}}>
+    <ChatContext.Provider value={{ getChat, chat, setChat }}>
         {children}
     </ChatContext.Provider>
   )
