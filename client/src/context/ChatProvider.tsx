@@ -24,7 +24,6 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
               .then(res => res.json())
               .then(res => setChat({messages: res.chat, contactID: contactID}));
                   
-    
             } catch(err) {
                 console.log(err);
             }; 

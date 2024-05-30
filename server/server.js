@@ -213,7 +213,7 @@ app.post('/api/getChat', async (req, res) => {
         const result = checkIfChatExists.rows;
         if(result.length == 0) {
             try {
-                await db.query(`CREATE TABLE ${chatID_1} (msg_id varchar(100) NOT NULL UNIQUE, sender_id varchar(100) NOT NULL, date varchar(30), msg_text varchar(1000) NOT NULL)`);
+                await db.query(`CREATE TABLE ${chatID_1} (msg_id SERIAL PRIMARY KEY, sender_id varchar(100) NOT NULL, date varchar(30), msg_text varchar(1000) NOT NULL)`);
                 const chat = await db.query(`SELECT * FROM ${result[0].name}`);
                 res.json({chat: chat.rows});
             } catch (err) {
@@ -241,6 +241,30 @@ app.post('/api/getContactsChats', async (req, res) => {
             res.json(result.rows);
         } else {
             res.json({msg: 'No contacts'});
+        };
+    } catch (err) {
+        console.log(err);
+    };
+});
+
+app.post('/api/sendMessage', async (req, res) => {
+    const contactID = req.body.contactID
+    const sender_id = req.body.sender_id;
+    const date = req.body.date;
+    const msg_text = req.body.msg_text;
+
+    const chatID_1 = 'chat_'+sender_id+contactID;
+    const chatID_2 = 'chat_'+contactID+sender_id;
+
+    try {
+        const checkName = await db.query('SELECT table_name AS name FROM information_schema.tables WHERE table_name = $1 OR table_name = $2', [chatID_1, chatID_2]);
+        const tableName = checkName.rows[0].name;
+        if(tableName){
+            try{
+                await db.query(`INSERT INTO ${tableName} (sender_id, date, msg_text) VALUES ($1, $2, $3)`, [sender_id, date, msg_text]);
+            } catch (err) {
+                console.log(err);
+            };
         };
     } catch (err) {
         console.log(err);
