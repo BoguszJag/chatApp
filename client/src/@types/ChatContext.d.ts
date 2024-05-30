@@ -8,7 +8,7 @@ export type msg = {
         msg_text: string
     }
 
-export type chat = Array<msg>;
+export type chat = {messages: Array<msg>, contactID: string};
 
 export type ChatContextType = {
     chat: chat | null,

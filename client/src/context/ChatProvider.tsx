@@ -12,7 +12,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
         await checkAuth();
         if(auth) {
           try {
-            const response = await fetch('/api/getChat', {
+            await fetch('/api/getChat', {
               method: 'POST',
               credentials: 'include',
               headers: {
@@ -22,10 +22,8 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
               body: JSON.stringify({currentUserID: auth.id, contactID: contactID})
               })
               .then(res => res.json())
-              .then(res => setChat(res.chat));
+              .then(res => setChat({messages: res.chat, contactID: contactID}));
                   
-              console.log(chat);
-    
             } catch(err) {
                 console.log(err);
             }; 
