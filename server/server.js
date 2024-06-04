@@ -7,8 +7,11 @@ import passport from 'passport';
 import bcrypt from 'bcrypt';
 import { Strategy } from 'passport-local';
 import session from 'express-session';
+import { Server } from 'socket.io';
+import { createServer } from 'http';
  
 const app = express();
+const server = createServer(app);
 const saltRounds = 12;
 env.config();
 const port = process.env.SERVER_PORT || 3001;
@@ -42,6 +45,14 @@ const db = new pg.Client({
 });
 
 db.connect();
+
+const io = new Server(server, {
+
+});
+
+io.on('connection', (socket) => {
+    console.log("User connected");
+});
 
 app.post('/api/register', async (req, res) => {
     const email = await req.body.email;
@@ -306,4 +317,4 @@ passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
-app.listen(port, () => {console.log(`Server listening on port ${port}`)});
+server.listen(port, () => {console.log(`Server listening on port ${port}`)});
