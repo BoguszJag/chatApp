@@ -13,5 +13,6 @@ export type chat = {messages: Array<msg>, contactID: string};
 export type ChatContextType = {
     chat: chat | null,
     setChat: React.Dispatch<React.SetStateAction<chat | null>>,
-    getChat: (contactID: string) => Promise<void>
+    getChat: (contactID: string) => Promise<void>,
+    currentSocket: Socket
 }

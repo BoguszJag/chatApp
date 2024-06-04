@@ -51,7 +51,10 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-    console.log("User connected");
+    socket.on('join', function(chat) {
+        socket.join(chat);
+        console.log("User joined " + chat);
+    });
 });
 
 app.post('/api/register', async (req, res) => {
@@ -233,7 +236,7 @@ app.post('/api/getChat', async (req, res) => {
             } else {
             try {
                 const chat = await db.query(`SELECT * FROM ${result[0].name}`);
-                res.json({chat: chat.rows});
+                res.json({chatID: result[0].name, chat: chat.rows});
             } catch (err) {
                 console.log(err);
             };
