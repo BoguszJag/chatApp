@@ -1,4 +1,4 @@
-async function checkIfLoggedIn(auth: object) {
+async function checkIfLoggedIn(auth: {id: string, email: string, username: string}) {
     try {
       const response = await fetch('/api/check', {
         method: 'POST',
@@ -10,8 +10,6 @@ async function checkIfLoggedIn(auth: object) {
         body: JSON.stringify(auth)
       })
       .then(res => res.json())
-
-      // console.log(response)
 
       return response.res
 

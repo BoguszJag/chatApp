@@ -15,6 +15,12 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({chil
         setAuth(null);
       };
       return result;
+    } else {
+      const user = localStorage.getItem('user');
+      const parsed = user ? JSON.parse(user) : null;
+      const result = await checkIfLoggedIn(parsed);
+      setAuth(parsed);
+      return result;
     };
   };
 

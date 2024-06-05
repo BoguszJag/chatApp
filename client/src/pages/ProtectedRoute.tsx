@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 
 function ProtectedRoute() {
 
-    const { auth } = useAuth();
     const { checkAuth } = useAuth();
 
     const redirectRoute = '/login';
@@ -13,7 +12,7 @@ function ProtectedRoute() {
         checkAuth();
     }, [checkAuth]) 
 
-    return !auth ? <Navigate to={redirectRoute}/> : <Outlet/>
+    return !checkAuth() ? <Navigate to={redirectRoute}/> : <Outlet/>
     
 }
 
