@@ -4,15 +4,15 @@ import { useEffect } from 'react';
 
 function ProtectedRoute() {
 
-    const { checkAuth } = useAuth();
+    const { auth, checkAuth } = useAuth();
 
     const redirectRoute = '/login';
 
     useEffect(() => {
         checkAuth();
-    }, [checkAuth]) 
+    }, []);
 
-    return !checkAuth() ? <Navigate to={redirectRoute}/> : <Outlet/>
+    return !auth && !localStorage.getItem('user') ? <Navigate to={redirectRoute}/> : <Outlet/>
     
 }
 

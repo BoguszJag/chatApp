@@ -1,4 +1,4 @@
-async function checkIfLoggedIn(auth: {id: string, email: string, username: string}) {
+async function checkIfLoggedIn(auth: {id: string, email: string, username: string} | string) {
     try {
       const response = await fetch('/api/check', {
         method: 'POST',
@@ -7,15 +7,15 @@ async function checkIfLoggedIn(auth: {id: string, email: string, username: strin
           'Content-Type':'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(auth)
+        body: typeof auth === 'string' ? auth : JSON.stringify(auth)
       })
-      .then(res => res.json())
+      .then(res => res.json());
 
-      return response.res
+      return response.user;
 
     } catch (err) {
-      console.log(err)
-    }
-  }
+      console.log(err);
+    };
+  };
 
   export default checkIfLoggedIn;

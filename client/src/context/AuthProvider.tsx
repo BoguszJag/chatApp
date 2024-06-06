@@ -9,19 +9,17 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({chil
   //const [auth, setAuth] = useState({user: localStorage.getItem('user') || null});
 
   const checkAuth = async () => {
+    let result;
     if(auth) {
-      const result =  await checkIfLoggedIn(auth);
-      if(result === false) {
-        setAuth(null);
-      };
-      return result;
+      result = await checkIfLoggedIn(auth).then(auth => {return auth});
     } else {
       const user = localStorage.getItem('user');
-      const parsed = user ? JSON.parse(user) : null;
-      const result = await checkIfLoggedIn(parsed);
-      setAuth(parsed);
-      return result;
-    };
+      user ? result = await checkIfLoggedIn(user).then(user => {return user}) : result = null;
+    }
+    if(!result) {
+      localStorage.clear();
+    }
+    setAuth(result);
   };
 
   return (
