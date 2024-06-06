@@ -12,7 +12,7 @@ function ProtectedRoute() {
         checkAuth();
     }, []);
 
-    return !auth && !localStorage.getItem('user') ? <Navigate to={redirectRoute}/> : <Outlet/>
+    return !localStorage.getItem('user') ? <Navigate to={redirectRoute}/> : <Outlet/>
     
 }
 

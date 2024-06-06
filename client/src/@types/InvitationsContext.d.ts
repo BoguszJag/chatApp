@@ -9,4 +9,5 @@ export type Invites = {
 export type InvitationsContextType = {
     getInvites: () => Promise<void>;
     invites: Invites | null;
+    setInvites: React.Dispatch<React.SetStateAction<Invites | null>>;
 };

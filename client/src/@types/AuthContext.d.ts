@@ -11,4 +11,6 @@ export type AuthContextType = {
     auth: User | null;
     setAuth: React.Dispatch<React.SetStateAction<User | null>>;
     checkAuth: () => Promise<void>;
+    authStorage: string | null;
+    setAuthStorage: React.Dispatch<React.SetStateAction<string | null>>;
 };

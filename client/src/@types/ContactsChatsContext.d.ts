@@ -9,5 +9,6 @@ export type ContactsChats = [{
 
 export type ContactsChatsContextType = {
     getContactsChats: () => Promise<void>,
-    contactsChats: ContactsChats | null
+    contactsChats: ContactsChats | null,
+    setContactsChats: React.Dispatch<React.SetStateAction<ContactsChats | null>>
 };

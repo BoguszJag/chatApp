@@ -9,7 +9,7 @@ import useAuth from '../hooks/useAuthContext';
 function LoginForm() {
   const [input, setInput] = useState<loginCredentials>({email: "", password: ""});
   const [credentialsError, setCredentialsError] = useState<credsError>();
-  const { setAuth } = useAuth();
+  const { setAuth, setAuthStorage } = useAuth();
   const navigate = useNavigate();
 
   type credsError = string | null;
@@ -54,6 +54,7 @@ function LoginForm() {
         } else {
           localStorage.setItem('user', JSON.stringify(response));
           setAuth(response);
+          setAuthStorage(localStorage.getItem('user'));
           navigate('/');
         }
 
