@@ -8,11 +8,13 @@ export type msg = {
         msg_text: string
     }
 
-export type chat = {messages: Array<msg>, contactID: string};
+export type chatType = {
+    ID: string, 
+    messages: msg[], 
+    contactID: string} | null
 
 export type ChatContextType = {
-    chat: chat | null,
+    chat: chatType,
     setChat: React.Dispatch<React.SetStateAction<chat | null>>,
-    getChat: (contactID: string) => Promise<void>,
-    currentSocket: Socket
+    getChat: (contactID: string) => Promise<void>
 }
