@@ -9,12 +9,14 @@ import ProtectedRoute from './pages/ProtectedRoute';
 import { InvitationsContextProvider } from './context/InvitationsProvider';
 import { ContactsChatsContextProvider } from './context/ContactsChatsProvider';
 import { ChatContextProvider } from './context/ChatProvider';
+import { SocketContextProvider } from './context/SocketProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+    <SocketContextProvider>
     <AuthContextProvider>
       <InvitationsContextProvider>
       <ContactsChatsContextProvider>
@@ -32,7 +34,8 @@ root.render(
       </ContactsChatsContextProvider>
       </InvitationsContextProvider>
     </AuthContextProvider>
-  </React.StrictMode>
+    </SocketContextProvider>
+  // </React.StrictMode>
 );
 
 

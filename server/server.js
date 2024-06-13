@@ -65,16 +65,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('message', async msg => {
-        // console.log(msg);
         try {
            await db.query(`INSERT INTO ${msg.chat} (sender_id, date, msg_text) VALUES ($1, $2, $3)`, [msg.sender_id, msg.date, msg.msg_text]);
            io.to(msg.chat).emit('updateChat');
         } catch (err) {
             console.log(err);
         };
-
-        // io.to(msg.chat).emit('passMessage', {sender_id: msg.sender_id, date: msg.date, msg_text: msg.msg_text});
-        
     });
 });
 
