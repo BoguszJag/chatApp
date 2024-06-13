@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import useChat from '../hooks/useChatContext'
 import Message from './Message';
 
 function ChatMsgField() {
-  const {chat} = useChat();
+  const {chat, getMessages, messages} = useChat();
+
+  useEffect(() => {
+    getMessages();
+  },[chat?.contact])
 
   return (
     <div className='h-full w-full whitespace-nowrap overflow-y-scroll'>
-      {chat ? chat.messages.map(messages => {
+        {messages ? messages.map(message => {
         return (
-          <Message key={messages.msg_id} msgID={messages.msg_id} msgDate={messages.date} msgText={messages.msg_text} />
+          <Message key={message.msg_id} msgID={message.msg_id} msgDate={message.date} msgText={message.msg_text} />
         )
       }) : null}
     </div>
