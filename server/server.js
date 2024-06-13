@@ -47,13 +47,34 @@ const db = new pg.Client({
 db.connect();
 
 const io = new Server(server, {
-
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
+        transports: ['websocket'],
+        credentials: true
+    }
 });
 
 io.on('connection', (socket) => {
     socket.on('join', function(chat) {
         socket.join(chat);
-        console.log("User joined " + chat);
+    });
+
+    socket.on('leave', function(chat) {
+        socket.leave(chat);
+    });
+
+    socket.on('message', async msg => {
+        // console.log(msg);
+        try {
+           await db.query(`INSERT INTO ${msg.chat} (sender_id, date, msg_text) VALUES ($1, $2, $3)`, [msg.sender_id, msg.date, msg.msg_text]);
+           io.to(msg.chat).emit('updateChat');
+        } catch (err) {
+            console.log(err);
+        };
+
+        // io.to(msg.chat).emit('passMessage', {sender_id: msg.sender_id, date: msg.date, msg_text: msg.msg_text});
+        
     });
 });
 
@@ -111,9 +132,9 @@ app.post('/api/logout', (req, res) => {
 
 app.post('/api/check', (req, res) => {
     if(req.user){
-        res.json({res: true});
+        res.json({user: {id: req.user.id, email: req.user.email, username: req.user.username}});
     } else {
-        res.json({res: false});
+        res.json({user: null});
     };
 });
 
@@ -228,7 +249,7 @@ app.post('/api/getChat', async (req, res) => {
         if(result.length == 0) {
             try {
                 await db.query(`CREATE TABLE ${chatID_1} (msg_id SERIAL PRIMARY KEY, sender_id varchar(100) NOT NULL, date varchar(30), msg_text varchar(1000) NOT NULL)`);
-                const chat = await db.query(`SELECT * FROM ${result[0].name}`);
+                const chat = await db.query(`SELECT * FROM ${chatID_1}`);
                 res.json({chat: chat.rows});
             } catch (err) {
                 console.log(err);
@@ -236,7 +257,7 @@ app.post('/api/getChat', async (req, res) => {
             } else {
             try {
                 const chat = await db.query(`SELECT * FROM ${result[0].name}`);
-                res.json({chatID: result[0].name, chat: chat.rows});
+                res.json({chatID: result[0].name, chat: chat.rows, contact: contactID});
             } catch (err) {
                 console.log(err);
             };
@@ -284,6 +305,31 @@ app.post('/api/sendMessage', async (req, res) => {
         console.log(err);
     };
 });
+
+app.post('/api/getMessages', async (req, res) => {
+    const contactID = req.body.contactID;
+    const sender_id = req.body.sender_id;
+
+    console.log(req.body)
+
+    const chatID_1 = 'chat_'+sender_id+contactID;
+    const chatID_2 = 'chat_'+contactID+sender_id;
+
+    try {
+        const checkName = await db.query('SELECT table_name AS name FROM information_schema.tables WHERE table_name = $1 OR table_name = $2', [chatID_1, chatID_2]);
+        const tableName = checkName.rows[0].name;
+        if(tableName){
+            try{
+                const result = await db.query(`SELECT * FROM ${tableName}`);
+                res.json(result.rows);
+            } catch (err) {
+                console.log(err);
+            };
+        };
+    } catch (err) {
+        console.log(err);
+    };
+})
 
 passport.use(
     'local',
