@@ -29,7 +29,7 @@ export const InvitationsContextProvider:  React.FC<{children: React.ReactNode}> 
         }};
 
     return (
-        <InvitationsContext.Provider value={{ getInvites, invites }}>
+        <InvitationsContext.Provider value={{ getInvites, invites, setInvites }}>
             {children}
         </InvitationsContext.Provider>
     )

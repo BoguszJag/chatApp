@@ -29,7 +29,7 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
     }};
 
   return (
-    <ContactsChatsContext.Provider value={{ getContactsChats, contactsChats }}>
+    <ContactsChatsContext.Provider value={{ getContactsChats, contactsChats, setContactsChats }}>
       {children}
     </ContactsChatsContext.Provider>
 

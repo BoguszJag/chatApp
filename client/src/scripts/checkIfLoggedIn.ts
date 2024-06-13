@@ -1,4 +1,5 @@
-async function checkIfLoggedIn(auth: {id: string, email: string, username: string} | string) {
+async function checkIfLoggedIn(auth: {id: string, email: string, username: string} | string | null) {
+  if(auth) {
     try {
       const response = await fetch('/api/check', {
         method: 'POST',
@@ -17,5 +18,6 @@ async function checkIfLoggedIn(auth: {id: string, email: string, username: strin
       console.log(err);
     };
   };
+};
 
   export default checkIfLoggedIn;

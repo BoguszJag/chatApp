@@ -6,15 +6,16 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
   const [auth, setAuth] = useState<User | null>(null);
+  const [authStorage, setAuthStorage] = useState<string | null>(null);
   //const [auth, setAuth] = useState({user: localStorage.getItem('user') || null});
 
   const checkAuth = async () => {
     let result;
-    if(auth) {
-      result = await checkIfLoggedIn(auth).then(auth => {return auth});
+    setAuthStorage(localStorage.getItem('user'));
+    if(authStorage) {
+      result = await checkIfLoggedIn(authStorage);
     } else {
-      const user = localStorage.getItem('user');
-      user ? result = await checkIfLoggedIn(user).then(user => {return user}) : result = null;
+      result = await checkIfLoggedIn(localStorage.getItem('user'));
     }
     if(!result) {
       localStorage.clear();
@@ -23,7 +24,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({chil
   };
 
   return (
-    <AuthContext.Provider value={{auth, setAuth, checkAuth}}>
+    <AuthContext.Provider value={{auth, setAuth, checkAuth, authStorage, setAuthStorage}}>
       {children}
     </AuthContext.Provider>
   )
