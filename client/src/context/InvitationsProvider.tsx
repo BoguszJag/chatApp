@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuthContext';
 import { InvitationsContextType, Invites } from '../@types/InvitationsContext';
 
@@ -27,6 +27,13 @@ export const InvitationsContextProvider:  React.FC<{children: React.ReactNode}> 
                 console.log(err);
             };
         }};
+
+        useEffect(() => {
+            if(auth === null) {
+              setInvites(null);
+            }
+          }, [auth]);
+        
 
     return (
         <InvitationsContext.Provider value={{ getInvites, invites, setInvites }}>

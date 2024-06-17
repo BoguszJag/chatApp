@@ -67,6 +67,13 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
 
   },[socket, messages])
 
+  useEffect(() => {
+    if(auth === null) {
+      setMessages(null);
+      setChat(null);
+    }
+  }, [auth]);
+
   return (
     <ChatContext.Provider value={{ getChat, chat, setChat, messages, getMessages }}>
         {children}

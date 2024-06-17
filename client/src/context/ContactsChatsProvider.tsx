@@ -1,15 +1,14 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuthContext';
 import { ContactsChats, ContactsChatsContextType } from '../@types/ContactsChatsContext';
 
 const ContactsChatsContext = createContext<ContactsChatsContextType | null>(null);
 
 export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
-  const {checkAuth, auth} = useAuth();
+  const {auth} = useAuth();
   const [contactsChats, setContactsChats] = useState<ContactsChats | null>(null);
 
   async function getContactsChats() {
-    await checkAuth();
     if(auth) {
       try {
         await fetch('/api/getContactsChats', {
@@ -27,6 +26,15 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
             console.log(err);
         };
     }};
+
+    useEffect(() => {
+      if(auth === null) {
+        setContactsChats(null);
+      };
+
+      getContactsChats();
+    }, [auth]);
+  
 
   return (
     <ContactsChatsContext.Provider value={{ getContactsChats, contactsChats, setContactsChats }}>

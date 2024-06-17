@@ -1,16 +1,10 @@
 import React from 'react'
 import useAuth from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';
-import useChat from '../hooks/useChatContext';
-import useInvitations from '../hooks/useInvitationsContext';
-import useContactsChats from '../hooks/useContactsChatsContext';
 
 function LogoutButton() {
     const { auth } = useAuth();
     const { setAuth } = useAuth();
-    const { setChat } = useChat();
-    const { setInvites } = useInvitations();
-    const { setContactsChats } = useContactsChats();
     const navigate = useNavigate();
 
     function handleLogout() {
@@ -26,9 +20,6 @@ function LogoutButton() {
     
           localStorage.clear();
           setAuth(null);
-          setChat(null);
-          setInvites(null);
-          setContactsChats(null);
           navigate('/login');
     
         } catch(err) {
