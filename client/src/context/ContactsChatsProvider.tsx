@@ -49,7 +49,13 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
 
     useEffect(() => {
       
-    })
+        const checkTimer = setInterval(getContactsChats, 10000);
+
+        return () => {
+          clearInterval(checkTimer);
+        };
+
+    },[auth]);
 
   return (
     <ContactsChatsContext.Provider value={{ getContactsChats, contactsChats, setContactsChats }}>
