@@ -279,30 +279,6 @@ app.post('/api/getContactsChats', async (req, res) => {
     };
 });
 
-app.post('/api/sendMessage', async (req, res) => {
-    const contactID = req.body.contactID
-    const sender_id = req.body.sender_id;
-    const date = req.body.date;
-    const msg_text = req.body.msg_text;
-
-    const chatID_1 = 'chat_'+sender_id+contactID;
-    const chatID_2 = 'chat_'+contactID+sender_id;
-
-    try {
-        const checkName = await db.query('SELECT table_name AS name FROM information_schema.tables WHERE table_name = $1 OR table_name = $2', [chatID_1, chatID_2]);
-        const tableName = checkName.rows[0].name;
-        if(tableName){
-            try{
-                await db.query(`INSERT INTO ${tableName} (sender_id, date, msg_text) VALUES ($1, $2, $3)`, [sender_id, date, msg_text]);
-            } catch (err) {
-                console.log(err);
-            };
-        };
-    } catch (err) {
-        console.log(err);
-    };
-});
-
 app.post('/api/getMessages', async (req, res) => {
     const contactID = req.body.contactID;
     const sender_id = req.body.sender_id;
