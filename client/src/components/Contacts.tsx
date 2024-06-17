@@ -28,7 +28,7 @@ function Contacts() {
             return <Contact key={contact['id']} id={contact['id']} username={contact['username']} lastMessage={contact['last_msg']} handleChat={getChat}/>
           })}
         </div>
-        {contactsChats && inputChange.length === 0 ? contactsChats.map(contact => {
+        {contactsChats && inputChange.length === 0 ? contactsChats.sort((a,b) => {return new Date(b.msg_date).getTime() - new Date(a.msg_date).getTime()}).map(contact => {
           return <Contact key={contact['id']} id={contact['id']} username={contact['username']} lastMessage={contact['last_msg']} handleChat={getChat}/>}) : null }
     </div>
   )
