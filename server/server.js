@@ -306,8 +306,6 @@ app.post('/api/getMessages', async (req, res) => {
     const contactID = req.body.contactID;
     const sender_id = req.body.sender_id;
 
-    console.log(req.body)
-
     const chatID_1 = 'chat_'+sender_id+contactID;
     const chatID_2 = 'chat_'+contactID+sender_id;
 
