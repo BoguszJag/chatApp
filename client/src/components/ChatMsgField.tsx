@@ -13,7 +13,7 @@ function ChatMsgField() {
     <div className='h-full w-full whitespace-nowrap overflow-y-scroll'>
         {messages ? messages.map(message => {
         return (
-          <Message key={message.msg_id} msgID={message.msg_id} msgDate={message.date} msgText={message.msg_text} />
+          <Message key={message.msg_id} msgID={message.msg_id} msgSenderID={message.sender_id} msgDate={message.date} msgText={message.msg_text} />
         )
       }) : null}
     </div>
