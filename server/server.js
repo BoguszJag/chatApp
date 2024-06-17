@@ -67,6 +67,7 @@ io.on('connection', (socket) => {
     socket.on('message', async msg => {
         try {
            await db.query(`INSERT INTO ${msg.chat} (sender_id, date, msg_text) VALUES ($1, $2, $3)`, [msg.sender_id, msg.date, msg.msg_text]);
+           await db.query(`UPDATE contacts SET last_msg = $1, msg_date = $2 WHERE (user_1id = $3 AND user_2id = $4) OR (user_1id = $4 AND user_2id = $3)`, [msg.msg_text, msg.date, msg.sender_id, msg.contactID]);
            io.to(msg.chat).emit('updateChat');
         } catch (err) {
             console.log(err);
