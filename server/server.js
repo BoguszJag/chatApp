@@ -279,6 +279,23 @@ app.post('/api/getContactsChats', async (req, res) => {
     };
 });
 
+app.post('/api/checkContactsChats', async (req, res) => {
+    const currentMessages = req.contacts;
+    const currentUserID = req.currentUser;
+
+    try {
+        const result = await db.query('SELECT user_2id AS id, user_2_name AS username, last_msg, msg_date FROM contacts WHERE user_1id = $1', [currentUserID]);
+        for(i = 0; i <= result.length; i++) {
+            if(currentMessages[i].last_msg !== result.rows[i].last_msg) {
+                res.json(result.rows);
+                break;
+            };
+        };
+    } catch (err) {
+        console.log(err);
+    };
+});
+
 app.post('/api/getMessages', async (req, res) => {
     const contactID = req.body.contactID;
     const sender_id = req.body.sender_id;
