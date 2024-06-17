@@ -11,13 +11,14 @@ export type msg = {
 export type chatType = {
     ID: string, 
     messages: msg[]
-    contact: string, 
+    contact: string,
+    contactName: string, 
     } | null
 
 export type ChatContextType = {
     chat: chatType,
     setChat: React.Dispatch<React.SetStateAction<chat | null>>,
-    getChat: (contactID: string) => Promise<void>,
+    getChat: (contactID: string, contactName: string) => Promise<void>,
     messages: msg[] | null,
     getMessages: () => Promise<void>
 }

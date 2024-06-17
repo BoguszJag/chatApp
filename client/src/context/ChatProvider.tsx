@@ -11,7 +11,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
   const {socket} = useSocket();
   const [messages, setMessages] = useState<msg[] | null>(null);
 
-  async function getChat(contactID: string) {
+  async function getChat(contactID: string, contactName: string) {
 
     socket.emit('leave', chat?.ID);
 
@@ -27,8 +27,8 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           body: JSON.stringify({currentUserID: auth.id, contactID: contactID})
           })
           .then(res => res.json())
-          .then(res => {{setChat({ID: res.chatID, messages: res.chat, contact: res.contact}); socket.emit('join', res.chatID);}})
-          .then(res => {return () => {getChat(contactID)}});
+          .then(res => {{setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); socket.emit('join', res.chatID);}})
+          .then(res => {return () => {getChat(contactID, contactName)}});
             
         } catch(err) {
           console.log(err);

@@ -6,7 +6,7 @@ function ChatInfoBar() {
 
   return (
     <div className='flex flex-shrink-0 justify-normal items-center w-full h-[39px] border-b border-gray-400'>
-      {chat ? chat.contact : null}
+      {chat ? chat.contactName : null}
     </div>
   )
 }
