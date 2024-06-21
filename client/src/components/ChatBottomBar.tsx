@@ -38,8 +38,13 @@ function ChatBottomBar() {
     if(msg) {
       socket.emit('message', msg)
     }
-  },[msg])
+  },[msg]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      socket.emit('isTyping', {id: auth?.id, chat: chat?.ID, input: input.length});
+    }, 500);
+  },[input, socket]);
 
   return (
     <div className='flex flex-row mt-auto justify-normal items-center w-full h-[39px]'>

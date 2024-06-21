@@ -73,6 +73,14 @@ io.on('connection', (socket) => {
             console.log(err);
         };
     });
+
+    socket.on('isTyping', args => {
+        if(args.input > 0) {
+            io.to(args.chat).emit('typing', args.id);
+        } else {
+            io.to(args.chat).emit('stopedTyping', args.id);
+        }; 
+    });
 });
 
 app.post('/api/register', async (req, res) => {
