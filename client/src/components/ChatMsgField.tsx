@@ -10,9 +10,14 @@ function ChatMsgField() {
   const {auth} = useAuth();
   const {socket} = useSocket();
   const scrollDiv = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
     scrollDiv.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const scrollOnContactChange = () => {
+    scrollDiv.current?.scrollIntoView({ behavior: 'instant' });
   };
 
   useEffect(() => {
@@ -43,11 +48,16 @@ function ChatMsgField() {
   },[auth, socket]);
 
   useEffect(() => {
-    scrollToBottom();
+    if(scrollRef.current) {
+      const isAtBottom = scrollRef.current.scrollTop + scrollRef.current.clientHeight + 300 >= scrollRef.current.scrollHeight;
+      if (isAtBottom) scrollToBottom();
+    };
+    
+    if(scrollRef.current && scrollRef.current.scrollTop <= 100) scrollOnContactChange()
   },[messages]);
 
   return (
-    <div className='flex flex-col h-full w-full whitespace-nowrap overflow-y-scroll'>
+    <div ref={scrollRef} className='flex flex-col h-full w-full whitespace-nowrap overflow-y-scroll'>
         {messages ? messages.map(message => {
         return (
           <Message key={message.msg_id} msgID={message.msg_id} msgSenderID={message.sender_id} msgDate={message.date} msgText={message.msg_text} />
