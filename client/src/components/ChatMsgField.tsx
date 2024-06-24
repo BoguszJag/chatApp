@@ -17,8 +17,8 @@ function ChatMsgField() {
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
-    socket.on('typing', (args) => {
-      if(auth && (auth?.id !== args)) {
+    socket.on('typing', (senderID) => {
+      if(auth && (auth?.id !== senderID)) {
         setIsTyping(true);
       };
 
@@ -29,8 +29,8 @@ function ChatMsgField() {
     }, 3000);
     });
 
-    socket.on('stopedTyping', (args) => {
-      if(auth && (auth?.id !== args)) {
+    socket.on('stopedTyping', (senderID) => {
+      if(auth && (auth?.id !== senderID)) {
         setIsTyping(false);
       };
     });
