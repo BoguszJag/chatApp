@@ -4,6 +4,7 @@ export type ContactsChats = [{
     id: string,
     username: string,
     last_msg: string,
+    sender_id: string,
     msg_date: string
 }];
 

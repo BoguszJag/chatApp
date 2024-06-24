@@ -25,11 +25,11 @@ function Contacts() {
         <SearchContacts handleInputChange={setInputChange} handleUsers={setContacts} apiRoute='/api/searchContacts'/>
         <div className='overflow-y-auto'>
           {contacts && contacts.map(contact => {
-            return <Contact key={contact['id']} id={contact['id']} username={contact['username']} lastMessage={contact['last_msg']} handleChat={getChat}/>
+            return <Contact key={contact['id']} id={contact['id']} username={contact['username']} lastMessage={contact['last_msg']} senderID={contact['sender_id']} handleChat={getChat}/>
           })}
         </div>
         {contactsChats && inputChange.length === 0 ? contactsChats.sort((a,b) => {return new Date(b.msg_date).getTime() - new Date(a.msg_date).getTime()}).map(contact => {
-          return <Contact key={contact['id']} id={contact['id']} username={contact['username']} lastMessage={contact['last_msg']} handleChat={getChat}/>}) : null }
+          return <Contact key={contact['id']} id={contact['id']} username={contact['username']} lastMessage={contact['last_msg']} senderID={contact['sender_id']} handleChat={getChat}/>}) : null }
     </div>
   )
 }

@@ -3,16 +3,17 @@ import React from 'react'
 type props = {
     id: string,
     username: string,
-    lastMessage: string
+    lastMessage: string,
+    senderID: string
     handleChat: (contactID: string, contactName: string) => void
 };
 
-function Contact({id, username, lastMessage, handleChat}: props) {
+function Contact({id, username, lastMessage, senderID, handleChat}: props) {
 
     return (
-        <div id={id} onClick={() => handleChat(id, username)} className='flex justify-normal items-center px-5 border-gray-400 border-b-[1px] hover:bg-gray-500 hover:text-black hover:border-black h-12 w-full'>
+        <div id={id} onClick={() => handleChat(id, username)} className='flex flex-col justify-normal px-5 border-gray-400 border-b-[1px] hover:bg-gray-500 hover:text-black hover:border-black h-12 w-full'>
             {username} 
-            <p className='ml-10 text-[14px]'>{lastMessage ? lastMessage.slice(0, 15) : null}</p>
+            <p className='text-[14px]'>{senderID ? (senderID !== id ? 'You: ' : username + ': ') : null}{lastMessage ? lastMessage.slice(0, 15) : null}</p>
         </div>
     )
 }
