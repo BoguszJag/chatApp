@@ -67,7 +67,7 @@ io.on('connection', (socket) => {
     socket.on('message', async msg => {
         try {
            await db.query(`INSERT INTO ${msg.chat} (sender_id, date, msg_text) VALUES ($1, $2, $3)`, [msg.sender_id, msg.date, msg.msg_text]);
-           await db.query(`UPDATE contacts SET last_msg = $1, msg_date = $2 WHERE (user_1id = $3 AND user_2id = $4) OR (user_1id = $4 AND user_2id = $3)`, [msg.msg_text, msg.date, msg.sender_id, msg.contactID]);
+           await db.query(`UPDATE contacts SET last_msg = $1, msg_date = $2, sender_id = $3 WHERE (user_1id = $3 AND user_2id = $4) OR (user_1id = $4 AND user_2id = $3)`, [msg.msg_text, msg.date, msg.sender_id, msg.contactID]);
            io.to(msg.chat).emit('updateChat');
         } catch (err) {
             console.log(err);
@@ -276,7 +276,7 @@ app.post('/api/getContactsChats', async (req, res) => {
     const currentUserID = req.body.currentUser;
 
     try {
-        const result = await db.query('SELECT user_2id AS id, user_2_name AS username, last_msg, msg_date FROM contacts WHERE user_1id = $1', [currentUserID]);
+        const result = await db.query('SELECT user_2id AS id, user_2_name AS username, last_msg, sender_id, msg_date FROM contacts WHERE user_1id = $1', [currentUserID]);
         if(result.rows.length > 0) {
             res.json(result.rows);
         } else {
