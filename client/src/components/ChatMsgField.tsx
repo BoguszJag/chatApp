@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import useChat from '../hooks/useChatContext'
 import Message from './Message';
 import useSocket from '../hooks/useSocketContext';
@@ -9,6 +9,11 @@ function ChatMsgField() {
   const [isTyping, setIsTyping] = useState(false);
   const {auth} = useAuth();
   const {socket} = useSocket();
+  const scrollDiv = useRef<HTMLDivElement | null>(null);
+
+  const scrollToBottom = () => {
+    scrollDiv.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     getMessages();
@@ -37,6 +42,10 @@ function ChatMsgField() {
 
   },[auth, socket]);
 
+  useEffect(() => {
+    scrollToBottom();
+  },[messages]);
+
   return (
     <div className='flex flex-col h-full w-full whitespace-nowrap overflow-y-scroll'>
         {messages ? messages.map(message => {
@@ -44,6 +53,7 @@ function ChatMsgField() {
           <Message key={message.msg_id} msgID={message.msg_id} msgSenderID={message.sender_id} msgDate={message.date} msgText={message.msg_text} />
         )
       }) : null}
+      <div ref={scrollDiv}></div>
       {isTyping ? <p className='mt-auto'>{chat?.contactName} is typing...</p> : null}
     </div>
   )
