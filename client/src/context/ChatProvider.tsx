@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuthContext';
 import { ChatContextType, chatType, msg } from '../@types/ChatContext';
 import useSocket from '../hooks/useSocketContext';
+import useContactsChats from '../hooks/useContactsChatsContext';
 
 const ChatContext = createContext<ChatContextType | null>(null);
 
@@ -10,6 +11,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
   const [chat, setChat] = useState<chatType>(null);
   const {socket} = useSocket();
   const [messages, setMessages] = useState<msg[] | null>(null);
+  const {contactsChats, setContactsChats} = useContactsChats();
 
   async function getChat(contactID: string, contactName: string) {
 
@@ -30,6 +32,20 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           .then(res => {{setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); socket.emit('join', res.chatID);}})
           .then(res => {return () => {getChat(contactID, contactName)}});
             
+          socket.emit('messageDisplayed', {user: auth.id, contact: contactID, chat: chat?.ID});
+          
+          if(contactsChats) {
+            for(let i = 0; i <= contactsChats.length; i++) {
+              if(contactsChats[i].id === contactID) {
+                setContactsChats((prev) => {
+                  if (prev) { 
+                    return [...prev.slice(0,i), ...prev.slice(i+1), {...prev[i], displayed: true}] 
+                  };
+                });
+              };
+            };
+          };
+
         } catch(err) {
           console.log(err);
         }; 
