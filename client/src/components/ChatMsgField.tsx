@@ -12,13 +12,40 @@ function ChatMsgField() {
   const scrollDiv = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
+  let ref = useRef<{prevScrollTop: number | undefined, prevScrollHeight: number | undefined} | undefined>();
+
+  // let contactRef = useRef<string | undefined>();
+
   const scrollToBottom = () => {
     scrollDiv.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollOnContactChange = () => {
-    scrollDiv.current?.scrollIntoView({ behavior: 'instant' });
-  };
+  // const scrollOnContactChange = () => {
+  //   scrollDiv.current?.scrollIntoView({ behavior: 'instant' });
+  // };
+
+  useEffect(() => {
+    let prevScrollTop: number | undefined;
+    let prevScrollHeight: number | undefined;
+
+    const scrollElement = scrollRef.current;
+
+    const handleScroll = () => {
+      prevScrollTop = scrollRef.current?.scrollTop
+      prevScrollHeight = scrollRef.current?.scrollHeight
+      ref.current = {prevScrollTop, prevScrollHeight}
+    };
+
+    if (scrollElement) {
+      scrollElement.addEventListener('scroll', handleScroll);
+    };
+
+    return () => {
+      if (scrollElement) {
+        scrollElement.removeEventListener('scroll', handleScroll);
+      };
+    };
+  },[scrollRef])
 
   useEffect(() => {
     getMessages();
@@ -48,12 +75,10 @@ function ChatMsgField() {
   },[auth, socket]);
 
   useEffect(() => {
-    if(scrollRef.current) {
-      const isAtBottom = scrollRef.current.scrollTop + scrollRef.current.clientHeight + 300 >= scrollRef.current.scrollHeight;
+    if(scrollRef.current && ref.current?.prevScrollTop && ref.current.prevScrollHeight) {
+      const isAtBottom = ref.current?.prevScrollTop + scrollRef.current.clientHeight === ref.current?.prevScrollHeight;
       if (isAtBottom) scrollToBottom();
     };
-    
-    if(scrollRef.current && scrollRef.current.scrollTop <= 100) scrollOnContactChange()
   },[messages]);
 
   return (
@@ -64,7 +89,7 @@ function ChatMsgField() {
         )
       }) : null}
       <div ref={scrollDiv}></div>
-      {isTyping ? <p className='mt-auto'>{chat?.contactName} is typing...</p> : null}
+      {isTyping ? <p className='h-[24px]'>{chat?.contactName} is typing...</p> : <p className='mt-auto pt-[24px]'></p>}
     </div>
   )
 }
