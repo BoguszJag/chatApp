@@ -1,13 +1,13 @@
 import React, { createContext, useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuthContext';
-import { ContactsChats, ContactsChatsContextType } from '../@types/ContactsChatsContext';
+import { ContactsChat, ContactsChatsContextType } from '../@types/ContactsChatsContext';
 import useSocket from '../hooks/useSocketContext';
 
 const ContactsChatsContext = createContext<ContactsChatsContextType | null>(null);
 
 export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
   const {auth} = useAuth();
-  const [contactsChats, setContactsChats] = useState<ContactsChats | null>(null);
+  const [contactsChats, setContactsChats] = useState<ContactsChat[] | undefined>(undefined);
   const {socket} = useSocket();
 
   async function getContactsChats() {
@@ -31,7 +31,7 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
 
     useEffect(() => {
       if(auth === null) {
-        setContactsChats(null);
+        setContactsChats(undefined);
       };
 
       getContactsChats();
@@ -40,9 +40,21 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
     useEffect(() => {
       
       socket.on('updateChat', getContactsChats);
+
+      socket.on('isDisplayed', (id) => {
+        if(id === auth?.id) {
+          getContactsChats();
+        }
+      });
       
       return () => {
         socket.off('updateChat', getContactsChats);
+
+        socket.off('isDisplayed', (id) => {
+          if(id === auth?.id) {
+            getContactsChats();
+          }
+        });
       };
 
     },[socket, contactsChats]);
