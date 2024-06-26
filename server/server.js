@@ -64,23 +64,43 @@ io.on('connection', (socket) => {
         socket.leave(chat);
     });
 
-    socket.on('message', async msg => {
+    socket.on('message', async (msg) => {
+        const roomSize = io.sockets.adapter.rooms.get(msg.chat).size;
+        
         try {
            await db.query(`INSERT INTO ${msg.chat} (sender_id, date, msg_text) VALUES ($1, $2, $3)`, [msg.sender_id, msg.date, msg.msg_text]);
            await db.query(`UPDATE contacts SET last_msg = $1, msg_date = $2, sender_id = $3 WHERE (user_1id = $3 AND user_2id = $4) OR (user_1id = $4 AND user_2id = $3)`, [msg.msg_text, msg.date, msg.sender_id, msg.contactID]);
+           await db.query('UPDATE contacts SET isdisplayed = TRUE WHERE user_1id = $1 AND user_2id = $2', [msg.sender_id, msg.contactID]);
+           if(roomSize >= 2) {
+                await db.query('UPDATE contacts SET isdisplayed = TRUE WHERE user_1id = $2 AND user_2id = $1', [msg.sender_id, msg.contactID]);
+           } else {
+                await db.query('UPDATE contacts SET isdisplayed = FALSE WHERE user_1id = $2 AND user_2id = $1', [msg.sender_id, msg.contactID]);
+           }
            io.to(msg.chat).emit('updateChat');
         } catch (err) {
             console.log(err);
         };
     });
 
-    socket.on('isTyping', args => {
+    socket.on('isTyping', (args) => {
         if(args.input > 0) {
             io.to(args.chat).emit('typing', args.id);
         } else {
             io.to(args.chat).emit('stopedTyping', args.id);
         }; 
     });
+
+    socket.on('messageDisplayed', async (msg) => {
+        try {
+            await db.query('UPDATE contacts SET isdisplayed = TRUE WHERE user_1id = $1 AND user_2id = $2', [msg.user, msg.contact]);
+            io.to(msg.chat).emit('isDisplayed', msg.user);
+        } catch (err) {
+            console.log(err);
+        };
+    });
+
+    // socket.on('disconnect', () => {
+    // });
 });
 
 app.post('/api/register', async (req, res) => {
@@ -276,7 +296,7 @@ app.post('/api/getContactsChats', async (req, res) => {
     const currentUserID = req.body.currentUser;
 
     try {
-        const result = await db.query('SELECT user_2id AS id, user_2_name AS username, last_msg, sender_id, msg_date FROM contacts WHERE user_1id = $1', [currentUserID]);
+        const result = await db.query('SELECT user_2id AS id, user_2_name AS username, last_msg, sender_id, msg_date, isdisplayed AS displayed FROM contacts WHERE user_1id = $1', [currentUserID]);
         if(result.rows.length > 0) {
             res.json(result.rows);
         } else {
