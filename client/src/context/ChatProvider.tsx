@@ -35,7 +35,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           socket.emit('messageDisplayed', {user: auth.id, contact: contactID, chat: chat?.ID});
           
           if(contactsChats) {
-            for(let i = 0; i <= contactsChats.length; i++) {
+            for(let i = 0; i < contactsChats.length; i++) {
               if(contactsChats[i].id === contactID) {
                 setContactsChats((prev) => {
                   if (prev) { 
