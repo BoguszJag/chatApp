@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import InvitationButton from './InvitationButton'
 import InvitationCancelButton from './InvitationCancelButton'
 import useAuth from '../hooks/useAuthContext'
+import useInvitations from '../hooks/useInvitationsContext'
 
 type props = {
     id: string,
@@ -10,7 +11,8 @@ type props = {
 }
 
 function Invitation({id, username, accept}: props) {
-  const { auth } = useAuth();
+  const {auth} = useAuth();
+  const {getInvites} = useInvitations();
 
   async function cancelInvitation() {
     if(auth) {
@@ -44,7 +46,9 @@ function Invitation({id, username, accept}: props) {
           },
           body: JSON.stringify({currentUserID: auth.id, currentUserName: auth.username, targetID: id, targetName: username})
           })
-          .then(res => res.json())
+          .then(res => res.json());
+
+          getInvites();
 
       } catch (err) {
         console.log(err);
