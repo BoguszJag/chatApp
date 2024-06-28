@@ -45,7 +45,7 @@ function AddContacts() {
     <div className='w-full'>
         <Search handleInputChange={setInputChange} handleUsers={setUsers} apiRoute='/api/addContacts'/>
         <div className='overflow-y-auto'>
-            {users && users.map(user => {
+            {users && inputChange.length > 0 && users.map(user => {
                 if(auth && user['id'] === auth['id']) { 
                     return null;
                 } else if((invites && invites.receivedInvites.some((e:{id: string}) => e.id === user['id'])) 
