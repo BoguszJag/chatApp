@@ -192,7 +192,6 @@ app.post('/api/sendInvitation', async (req, res) => {
             console.log('User already invited');
         } else {
             await db.query('INSERT INTO invites VALUES ($1, $2, $3)', [inviteID, currentUser, target]);
-            console.log('Invite created');
         };
     } catch (err) {
         console.log(err);
@@ -239,8 +238,10 @@ app.post('/api/addContact', async (req, res) => {
         db.query('INSERT INTO contacts VALUES ($1, $2, $3, $4, $5)', [contactID_1, targetID, currentUserID, targetName, currentUserName]);
         db.query('INSERT INTO contacts VALUES ($1, $2, $3, $4, $5)', [contactID_2, currentUserID, targetID, currentUserName, targetName]);
         db.query('DELETE FROM invites WHERE id = $1', [contactID_1]);
+        res.json('Done');
     } catch (err) {
         console.log(err);
+        res.json('Error');
     };
 });
 
