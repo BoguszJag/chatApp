@@ -26,9 +26,24 @@ function Sidepanel() {
   };
 
   useEffect(() => {
-    getInvites();
-    getContactsChats();
-  }, [switchView])
+    let timer: NodeJS.Timer | undefined;
+
+    if(switchView.viewInvitations) {
+      getInvites();
+      timer = setInterval(() => {
+        getInvites();
+      }, 5000);
+    };
+
+    if(!switchView.viewInvitations) {
+      getContactsChats();
+    };
+
+    return (() => {
+      clearInterval(timer);
+    })
+
+  }, [switchView.viewInvitations]);
 
   return (
     <div className='flex flex-col justfiy-normal items-start border-x border-solid border-gray-400 h-full'>
