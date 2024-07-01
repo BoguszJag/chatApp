@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import useChat from '../hooks/useChatContext'
 import useAuth from '../hooks/useAuthContext';
 import useSocket from '../hooks/useSocketContext';
@@ -9,6 +9,7 @@ function ChatBottomBar() {
   const [input, setInput] = useState('');
   const [msg, setMsg] = useState<text>();
   const {socket} = useSocket();
+  const divRef = useRef<HTMLDivElement | null>(null)
 
   type text = {
     chat: string | undefined
@@ -17,6 +18,12 @@ function ChatBottomBar() {
     date: string,
     msg_text: string
   }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if(e.key === 'Enter') {
+      sendMessage();
+    };
+  };
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -35,6 +42,14 @@ function ChatBottomBar() {
   };
 
   useEffect(() => {
+    divRef.current?.addEventListener('keydown', handleKeyDown);
+
+    return (() => {
+      divRef.current?.removeEventListener('keydown', handleKeyDown);
+    });
+  },[input]);
+
+  useEffect(() => {
     if(msg) {
       socket.emit('message', msg)
     }
@@ -47,7 +62,7 @@ function ChatBottomBar() {
   },[input, socket]);
 
   return (
-    <div className='flex flex-row mt-auto justify-normal items-center w-full h-[39px]'>
+    <div ref={divRef} className='flex flex-row mt-auto justify-normal items-center w-full h-[39px]'>
       <input disabled={!chat ? true : false} className='w-5/6 h-10 px-5 border-y border-r border-gray-400 placholder-gray-400 bg-gray-950' type="text" value={input} onChange={(e) => handleInput(e)} placeholder='Type a message...'/>
       <button disabled={!chat ? true : false} className={'w-1/6 h-10 border-y border-gray-400 ' + (!chat ? null : 'hover:bg-gray-500 hover:text-black')} onClick={sendMessage}>Send</button>
     </div>
