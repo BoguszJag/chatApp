@@ -152,6 +152,7 @@ app.post('/api/logout', (req, res) => {
         if (err) {
             return next(err);
         };
+        res.json('User logged out');
     });
 });
 
