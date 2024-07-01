@@ -6,7 +6,7 @@ import ChatMsgField from './ChatMsgField'
 function Chat() {
   
   return (
-    <div className='flex flex-col justify-normal items-start border-r border-y border-gray-400 h-dvh'>
+    <div className='flex flex-col justify-normal items-start h-[98dvh] m-2 rounded-3xl bg-[#2f3136]'>
       <ChatInfoBar />
       <ChatMsgField />
       <ChatBottomBar />

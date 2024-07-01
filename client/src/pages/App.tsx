@@ -6,7 +6,7 @@ import Sidepanel from '../components/Sidepanel';
 function App() {
 
   return (
-    <div className='grid grid-cols-chat bg-gray-950 text-gray-400 h-dvh'>
+    <div className='grid grid-cols-chat bg-[#1e2124] text-gray-300 h-dvh'>
       <Sidepanel />
       <Chat />
     </div>

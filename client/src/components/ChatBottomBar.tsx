@@ -63,8 +63,8 @@ function ChatBottomBar() {
 
   return (
     <div ref={divRef} className='flex flex-row mt-auto justify-normal items-center w-full h-[39px]'>
-      <input disabled={!chat ? true : false} className='w-5/6 h-10 px-5 border-y border-r border-gray-400 placholder-gray-400 bg-gray-950' type="text" value={input} onChange={(e) => handleInput(e)} placeholder='Type a message...'/>
-      <button disabled={!chat ? true : false} className={'w-1/6 h-10 border-y border-gray-400 ' + (!chat ? null : 'hover:bg-gray-500 hover:text-black')} onClick={sendMessage}>Send</button>
+      <input disabled={!chat ? true : false} className='w-5/6 h-10 px-5 border-t border-r border-gray-400 placholder-gray-400 bg-[#2f3136] focus:outline-none rounded-bl-3xl' type="text" value={input} onChange={(e) => handleInput(e)} placeholder='Type a message...'/>
+      <button disabled={!chat ? true : false} className={'w-1/6 h-10 border-t border-gray-400 rounded-br-3xl ' + (!chat ? null : 'hover:bg-gray-500 hover:text-black hover:rounded-br-3xl')} onClick={sendMessage}>Send</button>
     </div>
   )
 }

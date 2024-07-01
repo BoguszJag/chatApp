@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        'chat': '25% 75%'
+        'chat': '20% 80%'
       }
     },
   },

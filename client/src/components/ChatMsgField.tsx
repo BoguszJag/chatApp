@@ -82,7 +82,7 @@ function ChatMsgField() {
   },[messages]);
 
   return (
-    <div ref={scrollRef} className='flex flex-col h-full w-full whitespace-nowrap overflow-y-scroll'>
+    <div ref={scrollRef} className='flex flex-col h-full w-full whitespace-nowrap overflow-y-scroll scrollbar'>
         {messages ? messages.map(message => {
         return (
           <Message key={message.msg_id} msgID={message.msg_id} msgSenderID={message.sender_id} msgDate={message.date} msgText={message.msg_text} />

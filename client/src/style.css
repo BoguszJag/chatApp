@@ -21,3 +21,21 @@ body {
     min-width: 20%;
 }
 
+@layer utilities {
+    .scrollbar::-webkit-scrollbar {
+      width: 15px;
+    }
+  
+    .scrollbar::-webkit-scrollbar-track {
+      border-radius: 100vh;
+    }
+  
+    .scrollbar::-webkit-scrollbar-thumb {
+      background: #40444b;
+      border-radius: 100vh;
+    }
+  
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #36393e;
+    }
+  }
