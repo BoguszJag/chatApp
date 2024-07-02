@@ -42,9 +42,9 @@ function AddContacts() {
     },[inputChange]);
 
   return (
-    <div className='w-full'>
+    <div className='flex flex-col w-full h-full overflow-y-scroll overflow-x-hidden scrollbar whitespace-nowrap'>
         <Search handleInputChange={setInputChange} handleUsers={setUsers} apiRoute='/api/addContacts'/>
-        <div className='overflow-y-auto'>
+        <div className='h-full overflow-y-scroll overflow-x-hidden scrollbar whitespace-nowrap'>
             {users && inputChange.length > 0 && users.map(user => {
                 if(auth && user['id'] === auth['id']) { 
                     return null;
