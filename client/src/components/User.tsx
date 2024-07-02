@@ -16,7 +16,7 @@ function User({id, username, invited, invite}: props) {
     };
 
     return (
-        <div id={id} className='flex justify-normal items-center px-5 border-gray-400 border-b-[1px] hover:bg-gray-500 hover:text-black hover:border-black h-12 w-full'>
+        <div id={id} className='flex justify-normal items-center px-2 py-1 hover:bg-[#40444b] mx-3 rounded-xl h-12'>
             {username}
             {!invitedState ? <button onClick={handleClick} className='ml-auto'><img src='/images/addContact.png' alt='add contact image' className='size-8'/></button> : null}
         </div>

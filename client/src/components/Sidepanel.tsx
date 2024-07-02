@@ -48,8 +48,8 @@ function Sidepanel() {
   return (
     <div className='flex flex-col justfiy-normal items-start h-[98dvh] m-2 mr-0 rounded-3xl bg-[#2f3136]'>
         <div className='flex justify-normal items-start w-full'>
-          <button className='w-full h-10 border-r border-b border-gray-400' onClick={handleContactsView}>{switchView.viewAddContacts ? 'Contacts' : 'Add Contacts'}</button>
-          <button className='w-full h-10 border-b border-gray-400' name='invitations' onClick={handleInvitationsView}>Invitations</button>  
+          <button className='w-full h-10 border-r border-[#2f3136] bg-[#282b30] rounded-tl-3xl' onClick={handleContactsView}>{switchView.viewAddContacts ? 'Contacts' : 'Add Contacts'}</button>
+          <button className='w-full h-10 bg-[#282b30] rounded-tr-3xl' name='invitations' onClick={handleInvitationsView}>Invitations</button>  
         </div>
         {switchView.viewInvitations ? <Invitations /> : switchView.viewAddContacts ? <AddContacts /> : <Contacts />}
         <LogoutButton />

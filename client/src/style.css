@@ -23,11 +23,7 @@ body {
 
 @layer utilities {
     .scrollbar::-webkit-scrollbar {
-      width: 15px;
-    }
-  
-    .scrollbar::-webkit-scrollbar-track {
-      border-radius: 100vh;
+      width: 10px;
     }
   
     .scrollbar::-webkit-scrollbar-thumb {

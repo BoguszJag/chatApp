@@ -63,7 +63,7 @@ function SearchContacts({handleInputChange, handleUsers, apiRoute}: props) {
     },[input]);
 
   return (
-    <input className='w-full h-10 px-5 border-b-[1px] border-gray-400 placholder-gray-400 bg-[#2f3136] focus:outline-none' placeholder='Search' onChange={(e) => handleChange(e)} type='text' value={input} name='users' />
+    <input className='w-custom_margin h-10 px-5 mx-3 my-3 placholder-gray-400 bg-[#40444b] focus:outline-none rounded-xl' placeholder='Search' onChange={(e) => handleChange(e)} type='text' value={input} name='users' />
   );
 };
 
