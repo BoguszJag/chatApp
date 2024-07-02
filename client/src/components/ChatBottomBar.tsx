@@ -36,9 +36,10 @@ function ChatBottomBar() {
     const text = input;
     setInput('');
 
-    const msgObj = {chat: chat?.ID, contactID: chat?.contact, sender_id: auth?.id, date: currentDate, msg_text: text};
-    
-    setMsg(msgObj);
+    if(text.length > 0) {
+      const msgObj = {chat: chat?.ID, contactID: chat?.contact, sender_id: auth?.id, date: currentDate, msg_text: text};  
+      setMsg(msgObj);
+    }
   };
 
   useEffect(() => {
