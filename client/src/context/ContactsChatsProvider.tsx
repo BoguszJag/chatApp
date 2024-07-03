@@ -40,21 +40,9 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
     useEffect(() => {
       
       socket.on('updateChat', getContactsChats);
-
-      socket.on('isDisplayed', (id) => {
-        if(id === auth?.id) {
-          getContactsChats();
-        }
-      });
       
       return () => {
         socket.off('updateChat', getContactsChats);
-
-        socket.off('isDisplayed', (id) => {
-          if(id === auth?.id) {
-            getContactsChats();
-          }
-        });
       };
 
     },[socket, contactsChats]);
