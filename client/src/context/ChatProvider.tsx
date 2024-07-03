@@ -1,4 +1,4 @@
-import React, { createContext, createRef, useEffect, useRef, useState } from 'react'
+import React, { createContext, useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuthContext';
 import { ChatContextType, chatType, msg } from '../@types/ChatContext';
 import useSocket from '../hooks/useSocketContext';
@@ -33,7 +33,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           })
           .then(res => res.json())
           .then(res => {{setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); socket.emit('join', res.chatID)}})
-          .then(res => {setChatLoading(false); return () => {getChat(contactID, contactName)}});
+          .then(res => {return () => {getChat(contactID, contactName)}});
 
           if(contactsChats) {
             for(let i = 0; i < contactsChats.length; i++) {
@@ -76,7 +76,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
 
   useEffect(() => {
     if(chat) socket.emit('messageDisplayed', {user: auth?.id, contact: chat?.contact, chat: chat?.ID});
-
+    
     // socket.on('isDisplayed', (id) => {
     //   if(id === auth?.id) {
     //     getContactsChats();
