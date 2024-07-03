@@ -47,8 +47,8 @@ body {
 }
 
 .loadingSpinner {
-  width: 50px;
-  height: 50px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   border: 10px solid #40444b;
   border-top: 10px solid #36393e;
