@@ -45,7 +45,7 @@ function SearchContacts({handleInputChange, handleUsers, apiRoute}: props) {
                 } catch(err) {
                 console.log(err);
             };
-        } else {
+        } else if(contactsChats && contactsChats.length > 0) {
             const search = contactsChats?.filter((contact) => {
                 if(contact.username.slice(0, input.length).includes(input)) // Case sensitive
                     return true;  
