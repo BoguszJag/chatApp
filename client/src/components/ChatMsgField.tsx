@@ -5,10 +5,11 @@ import useSocket from '../hooks/useSocketContext';
 import useAuth from '../hooks/useAuthContext';
 
 function ChatMsgField() {
-  const {chat, getMessages, messages} = useChat();
+  const {chat, getMessages, messages, chatLoading} = useChat();
   const [isTyping, setIsTyping] = useState(false);
   const {auth} = useAuth();
   const {socket} = useSocket();
+
   const scrollDiv = useRef<HTMLDivElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -20,9 +21,9 @@ function ChatMsgField() {
     scrollDiv.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // const scrollOnContactChange = () => {
-  //   scrollDiv.current?.scrollIntoView({ behavior: 'instant' });
-  // };
+  const snapToBottom = () => {
+    scrollDiv.current?.scrollIntoView({ behavior: 'instant' });
+  };
 
   useEffect(() => {
     let prevScrollTop: number | undefined;
@@ -75,16 +76,18 @@ function ChatMsgField() {
   },[auth, socket]);
 
   useEffect(() => {
-    if(scrollRef.current && ref.current?.prevScrollTop && ref.current.prevScrollHeight) {
-      const isAtBottom = ref.current?.prevScrollTop + scrollRef.current.clientHeight === ref.current?.prevScrollHeight;
-      if (isAtBottom) scrollToBottom();
+    if(scrollRef.current && ref.current?.prevScrollTop && ref.current.prevScrollHeight && (ref.current?.prevScrollTop + scrollRef.current.clientHeight === ref.current?.prevScrollHeight)) {
+      scrollToBottom();
+    } else {
+      snapToBottom();
     };
   },[messages]);
 
   return (
     <div ref={scrollRef} className='flex flex-col h-full w-full whitespace-nowrap overflow-y-scroll scrollbar'>
-      {chat === null ? <div className='h-full w-full flex flex-col items-center justify-center text-2xl'>Click on a contact to open up a chat </div> : null}
-      {messages ? messages.map(message => {
+      {chat === null && !chatLoading ? <div className='h-full w-full flex flex-col items-center justify-center text-2xl'>Click on a contact to open up a chat</div> : null}
+      {chatLoading ? <div className='h-full w-full flex flex-col items-center justify-center l'><div className='loadingSpinner'></div></div> : null}
+      {!chatLoading && messages ? messages.map((message) => {
         return (
           <Message key={message.msg_id} msgID={message.msg_id} msgSenderID={message.sender_id} msgDate={message.date} msgText={message.msg_text} />
         )
