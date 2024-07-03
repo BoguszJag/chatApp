@@ -1,11 +1,13 @@
 import React from 'react'
 import useAuth from '../hooks/useAuthContext';
 import { useNavigate } from 'react-router-dom';
+import useSocket from '../hooks/useSocketContext';
 
 function LogoutButton() {
     const { auth } = useAuth();
     const { setAuth } = useAuth();
     const navigate = useNavigate();
+    const {socket} = useSocket();
 
     function handleLogout() {
 
@@ -19,6 +21,7 @@ function LogoutButton() {
           });
     
           localStorage.clear();
+          socket.disconnect();
           setAuth(null);
           navigate('/login');
     
