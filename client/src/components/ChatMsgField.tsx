@@ -83,7 +83,8 @@ function ChatMsgField() {
 
   return (
     <div ref={scrollRef} className='flex flex-col h-full w-full whitespace-nowrap overflow-y-scroll scrollbar'>
-        {messages ? messages.map(message => {
+      {chat === null ? <div className='h-full w-full flex flex-col items-center justify-center text-2xl'>Click on a contact to open up a chat </div> : null}
+      {messages ? messages.map(message => {
         return (
           <Message key={message.msg_id} msgID={message.msg_id} msgSenderID={message.sender_id} msgDate={message.date} msgText={message.msg_text} />
         )
