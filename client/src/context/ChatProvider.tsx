@@ -11,13 +11,15 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
   const [chat, setChat] = useState<chatType>(null);
   const {socket} = useSocket();
   const [messages, setMessages] = useState<msg[] | null>(null);
-  const {contactsChats, setContactsChats} = useContactsChats();
+  const {contactsChats, setContactsChats, getContactsChats} = useContactsChats();
+  const [chatLoading, setChatLoading] = useState(false);
 
   async function getChat(contactID: string, contactName: string) {
 
     socket.emit('leave', chat?.ID);
 
     if(auth) {
+      setChatLoading(true);
       try {
         await fetch('/api/getChat', {
           method: 'POST',
@@ -29,11 +31,9 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           body: JSON.stringify({currentUserID: auth.id, contactID: contactID})
           })
           .then(res => res.json())
-          .then(res => {{setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); socket.emit('join', res.chatID);}})
+          .then(res => {{setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); socket.emit('join', res.chatID); setChatLoading(false);}})
           .then(res => {return () => {getChat(contactID, contactName)}});
-            
-          socket.emit('messageDisplayed', {user: auth.id, contact: contactID, chat: chat?.ID});
-          
+
           if(contactsChats) {
             for(let i = 0; i < contactsChats.length; i++) {
               if(contactsChats[i].id === contactID) {
@@ -74,6 +74,25 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
   };
 
   useEffect(() => {
+    if(chat) {
+      socket.emit('messageDisplayed', {user: auth?.id, contact: chat?.contact, chat: chat?.ID});
+    };
+    
+    // socket.on('isDisplayed', (id) => {
+    //   if(id === auth?.id) {
+    //     getContactsChats();
+    //   }
+    // });
+
+    // socket.off('isDisplayed', (id) => {
+    //   if(id === auth?.id) {
+    //     getContactsChats();
+    //   }
+    // });
+
+  },[socket, chat])
+
+  useEffect(() => {
 
     socket.on('updateChat', getMessages)
 
@@ -91,7 +110,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
   }, [auth]);
 
   return (
-    <ChatContext.Provider value={{ getChat, chat, setChat, messages, getMessages }}>
+    <ChatContext.Provider value={{ getChat, chat, setChat, messages, getMessages, chatLoading }}>
         {children}
     </ChatContext.Provider>
   )
