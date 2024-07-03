@@ -57,7 +57,7 @@ function Invitation({id, username, accept}: props) {
   };
 
   return (
-    <div key={id} className='flex justify-normal items-center px-2 py-1 hover:bg-[#40444b] mx-3 rounded-xl h-12'>
+    <div key={id} className='flex justify-normal items-center h-12 px-2 py-1 mx-3 hover:bg-[#40444b] rounded-xl'>
       {username} 
       <div className='flex ml-auto'>
         {accept ? <InvitationButton buttonText='Accept' onClickAddContact={addContact} /> : null} <InvitationCancelButton buttonText='X' onClickCancel={cancelInvitation} />

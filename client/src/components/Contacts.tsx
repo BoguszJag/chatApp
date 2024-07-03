@@ -14,7 +14,7 @@ function Contacts() {
   return (
     <div className='flex flex-col w-full overflow-y-scroll overflow-x-hidden scrollbar'>
       <SearchContacts handleInputChange={setInputChange} handleUsers={setContacts} apiRoute={null}/>
-      <div className='overflow-y-scroll overflow-x-hidden scrollbar'>
+      <div className='pl-[10px] overflow-y-scroll overflow-x-hidden scrollbar'>
           {contacts && inputChange.length > 0 && contacts.map(contact => {
             return <Contact key={contact['id']} id={contact['id']} username={contact['username']} lastMessage={contact['last_msg']} senderID={contact['sender_id']} isDisplayed={contact['displayed']} handleChat={getChat}/>
           })}
