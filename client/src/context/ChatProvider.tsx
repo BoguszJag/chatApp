@@ -32,8 +32,15 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           body: JSON.stringify({currentUserID: auth.id, contactID: contactID})
           })
           .then(res => res.json())
-          .then(res => {{setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); socket.emit('join', res.chatID)}})
-          .then(res => {return () => {getChat(contactID, contactName)}});
+          .then(res => {{
+            setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); 
+            setChatLoading(false);  
+            socket.emit('join', res.chatID)
+          }})
+          .then(res => {
+            return () => {
+              getChat(contactID, contactName)
+            }});
 
           if(contactsChats) {
             for(let i = 0; i < contactsChats.length; i++) {
@@ -66,7 +73,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           body: JSON.stringify({sender_id: auth?.id, contactID: chat.contact})
         })
         .then(res => res.json())
-        .then(res => setMessages(res))
+        .then(res => setMessages(res));
       
       } catch(err) {
         console.log(err);
@@ -89,17 +96,17 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
     //   }
     // });
 
-  },[socket, chat])
+  },[socket, chat]);
 
   useEffect(() => {
 
-    socket.on('updateChat', getMessages)
+    socket.on('updateChat', getMessages);
 
     return () => {
-      socket.off('updateChat', getMessages)
-    }
+      socket.off('updateChat', getMessages);
+    };
 
-  },[socket, messages])
+  },[socket, messages]);
 
   useEffect(() => {
     if(auth === null) {
