@@ -56,5 +56,9 @@ body {
 }
 
 .sidepanel-hide {
-  
+  grid-template-columns: 100%;
+}
+
+.sidepanel-show {
+  grid-template-columns: 100%;
 }
