@@ -84,8 +84,8 @@ function ChatMsgField() {
   },[messages]);
 
   return (
-    <div ref={scrollRef} className='flex flex-col h-full w-full whitespace-nowrap overflow-y-scroll scrollbar'>
-      {chat === null && !chatLoading ? <div className='h-full w-full flex flex-col items-center justify-center text-2xl'>Click on a contact to open up a chat</div> : null}
+    <div ref={scrollRef} className='flex flex-col h-full w-full whitespace-nowrap overflow-y-scroll overflow-x-hidden scrollbar'>
+      {chat === null && !chatLoading ? <div className='h-full w-full flex flex-col items-center justify-center text-2xl text-wrap mx-2'>Click on a contact to open up a chat</div> : null}
       {chatLoading ? <div className='h-full w-full flex flex-col items-center justify-center l'><div className='loading-spinner'></div></div> : null}
       {!chatLoading && messages ? messages.map((message) => {
         return (
