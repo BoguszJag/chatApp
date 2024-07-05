@@ -17,7 +17,7 @@ function Invitations() {
         {invites && invites.sentInvites.map((invite: {id: string, username: string}) => {
           return <Invitation key={invite.id} id={invite.id} username={invite.username} accept={false} />
         })}
-        {invites === null ? <div className='flex items-center justify-center w-full mt-5'><div className='loadingSpinner w-full'></div></div> : null}
+        {invites === null ? <div className='flex items-center justify-center w-full mt-5'><div className='loading-spinner w-full'></div></div> : null}
       </div>
     </div>
   )
