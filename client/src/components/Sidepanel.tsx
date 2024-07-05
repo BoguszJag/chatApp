@@ -6,7 +6,11 @@ import Invitations from './Invitations';
 import useInvitations from '../hooks/useInvitationsContext';
 import useContactsChats from '../hooks/useContactsChatsContext';
 
-function Sidepanel() {
+type props = {
+  windowWidth: number
+};
+
+function Sidepanel({windowWidth}: props) {
   const [switchView, setSwitchView] = useState({viewAddContacts: false, viewInvitations: false});
   const {getInvites} = useInvitations();
   const {getContactsChats} = useContactsChats();
@@ -46,7 +50,7 @@ function Sidepanel() {
   }, [switchView.viewInvitations]);
 
   return (
-    <div className='flex flex-col justfiy-normal items-start h-[98dvh] m-2 mr-0 rounded-3xl bg-[#2f3136]'>
+    <div className={'flex flex-col justfiy-normal items-start h-[98dvh] m-2 mr-0 rounded-3xl bg-[#2f3136] ' + (windowWidth < 1024 ? 'mr-2' : null)}>
         <div className='flex justify-normal items-start w-full'>
           <button className='w-1/2 h-10 border-r border-[#2f3136] bg-[#282b30] rounded-tl-3xl hover:bg-[#40444b] hover:rounded-tl-3xl overflow-hidden' onClick={handleContactsView}>{switchView.viewAddContacts ? 'Contacts' : 'Add Contacts'}</button>
           <button className='w-1/2 h-10 bg-[#282b30] rounded-tr-3xl hover:bg-[#40444b] hover:rounded-tr-3xl overflow-hidden' name='invitations' onClick={handleInvitationsView}>Invitations</button>  
