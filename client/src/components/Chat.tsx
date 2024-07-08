@@ -10,7 +10,7 @@ type props = {
 function Chat({windowWidth}: props) {
   
   return (
-    <div className={'flex flex-col justify-normal items-start h-[98dvh] m-2 rounded-3xl bg-[#2f3136]'}>
+    <div className={'flex flex-col justify-normal items-start h-[98dvh] m-2 rounded-3xl bg-[#2f3136] shadow-lg'}>
       <ChatInfoBar />
       <ChatMsgField />
       <ChatBottomBar />
