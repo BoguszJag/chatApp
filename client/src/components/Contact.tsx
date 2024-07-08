@@ -7,16 +7,22 @@ type props = {
     lastMessage: string,
     senderID: string,
     isDisplayed: boolean,
-    handleChat: (contactID: string, contactName: string) => void
+    handleChat: (contactID: string, contactName: string) => void,
+    handleSidepanelState: React.Dispatch<React.SetStateAction<string>>
 };
 
-function Contact({id, username, lastMessage, senderID, isDisplayed, handleChat}: props) {
+function Contact({id, username, lastMessage, senderID, isDisplayed, handleChat, handleSidepanelState}: props) {
     const {chat} = useChat();
 
+    const handleClick = () => {
+        handleChat(id, username);
+        handleSidepanelState('hide');
+    };
+
     return (
-        <div id={id} onClick={id !== chat?.contact ? () => handleChat(id, username) : undefined} className='flex flex-col justify-normal px-2 py-1 hover:bg-[#40444b] mx-3 rounded-xl overflow-hidden text-nowrap'>
-            {username} 
-            <p className={` text-[14px]` + (!isDisplayed ? 'font-bold text-red-800' : null)}>{senderID ? (senderID !== id ? 'You: ' : username + ': ') : null}{lastMessage ? lastMessage.slice(0, 15) : null}</p>
+        <div id={id} onClick={id !== chat?.contact ? () => handleClick() : undefined} className='flex flex-col justify-normal px-2 py-1 hover:bg-[#40444b] mx-3 rounded-xl overflow-hidden text-nowrap'>
+            {<p className={!isDisplayed ? 'oswald-700 text-gray-400' : ''}>{username}</p>} 
+            <p className={`text-[14px] ` + (!isDisplayed ? 'oswald-700 text-gray-400' : null)}>{senderID ? (senderID !== id ? 'You: ' : username + ': ') : null}{lastMessage ? lastMessage.slice(0, 15) : null}</p>
         </div>
     )
 }
