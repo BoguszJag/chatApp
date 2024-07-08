@@ -93,7 +93,7 @@ function ChatMsgField() {
         )
       }) : null}
       <div ref={scrollDiv}></div>
-      {isTyping ? <p className='h-[24px]'>{chat?.contactName} is typing...</p> : <p className='mt-auto pt-[24px]'></p>}
+      {isTyping ? <p className='h-[24px] ml-2'>{chat?.contactName} is typing...</p> : <p className='mt-auto pt-[24px]'></p>}
     </div>
   )
 }
