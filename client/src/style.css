@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-    background: linear-gradient(117deg, rgba(24,133,248,1) 0%, rgba(170,230,181,1) 100%);
-}
-
 .wrapper {
     display: flex;
     align-items: center;
@@ -18,7 +14,7 @@ body {
     flex-direction: column;
     align-items: center;
     max-width: 40dvh;
-    min-width: 20%;
+    min-width: 30dvh;
 }
 
 @layer utilities {
@@ -56,9 +52,23 @@ body {
 }
 
 .sidepanel-hide {
-  grid-template-columns: 100%;
+  grid-template-columns: 0% 100%;
 }
 
 .sidepanel-show {
-  grid-template-columns: 100%;
+  grid-template-columns: 100% 0%;
+}
+
+.oswald-300 {
+  font-family: 'Oswald', sans-serif;
+  src: url('../public/fonts/Oswald-VariableFont_wght.ttf') format(ttf);
+  font-weight: 300;
+  font-style: normal;
+}
+
+.oswald-700 {
+  font-family: 'Oswald', sans-serif;
+  src: url('../public/fonts/Oswald-VariableFont_wght.ttf') format(ttf);
+  font-weight: 700;
+  font-style: normal;
 }
