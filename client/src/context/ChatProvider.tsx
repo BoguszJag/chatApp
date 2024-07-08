@@ -47,7 +47,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
               if(contactsChats[i].id === contactID) {
                 setContactsChats((prev) => {
                   if (prev) { 
-                    return [...prev.slice(0,i), ...prev.slice(i+1), {...prev[i], displayed: true}] 
+                    return [...prev.slice(0,i), {...prev[i], displayed: true}, ...prev.slice(i+1)] 
                   };
                 });
               };
