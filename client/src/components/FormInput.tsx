@@ -11,7 +11,7 @@ type props = {
 function FormInput({inputValue, inputType, inputName, placeholder, onChange}: props) {
 
   return (
-    <input className='border-solid border-b-2 border-sky-500 h-10 w-3/4 p-5 mb-5 caret-black' onChange={(e) => onChange(e)} required placeholder={placeholder} value={inputValue} type={inputType} name={inputName}></input>
+    <input className='border-solid h-10 w-3/4 p-5 mb-5 caret-[#1e2124] bg-[#40444b] rounded-3xl focus:outline-none' onChange={(e) => onChange(e)} required placeholder={placeholder} value={inputValue} type={inputType} name={inputName}></input>
   )
 }
 
