@@ -53,7 +53,7 @@ function Sidepanel({windowWidth, handleSidepanelState}: props) {
   return (
     <div className={'flex flex-col justfiy-normal items-start h-[98dvh] m-2 mr-0 rounded-3xl bg-[#2f3136] shadow-lg ' + (windowWidth < 1024 ? 'mr-2' : null)}>
         <div className='flex justify-normal items-start w-full'>
-          <button className='w-1/2 h-10 border-r border-[#2f3136] bg-[#282b30] rounded-tl-3xl hover:bg-[#40444b] hover:rounded-tl-3xl overflow-hidden' onClick={handleContactsView}>{switchView.viewAddContacts ? 'Contacts' : 'Add Contacts'}</button>
+          <button className='w-1/2 h-10 bg-[#282b30] rounded-tl-3xl hover:bg-[#40444b] hover:rounded-tl-3xl overflow-hidden text-nowrap' onClick={handleContactsView}>{switchView.viewAddContacts ? 'Contacts' : 'Add Contacts'}</button>
           <button className='w-1/2 h-10 bg-[#282b30] rounded-tr-3xl hover:bg-[#40444b] hover:rounded-tr-3xl overflow-hidden' name='invitations' onClick={handleInvitationsView}>Invitations</button>  
         </div>
         {switchView.viewInvitations ? <Invitations /> : switchView.viewAddContacts ? <AddContacts /> : <Contacts handleSidepanelState={handleSidepanelState}/>}
