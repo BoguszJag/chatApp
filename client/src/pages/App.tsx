@@ -22,10 +22,10 @@ function App() {
   },[]);
 
   return (
-    <div className={`relative grid bg-[#1e2124] text-gray-300 h-dvh overflow-hidden oswald-300 ` + (windowWidth >= 1024 ? 'grid-cols-chat' : 'sidepanel-' + sidepanelState)}>
-      {sidepanelState === 'hide' && windowWidth < 1024 ? <div></div> : <Sidepanel windowWidth={windowWidth} handleSidepanelState={setSidepanelState}/>}
+    <div className={`relative grid bg-[#1e2124] text-gray-300 h-dvh overflow-hidden oswald-300 grid-anim ` + (windowWidth < 1024 ? sidepanelState === 'show' ? 'expand ' : 'shrink ' : '') + (windowWidth >= 1024 ? 'grid-cols-chat' : 'sidepanel-' + sidepanelState)}>
+      <Sidepanel windowWidth={windowWidth} handleSidepanelState={setSidepanelState}/>
       {windowWidth < 1024 ? <SidePanelButton currentSidepanelState={sidepanelState} handleSidepanelState={setSidepanelState}/> : null}
-      {sidepanelState === 'show' && windowWidth < 1024 ? <div></div> : <Chat windowWidth={windowWidth}/>}
+      <Chat windowWidth={windowWidth}/>
     </div>
   );
 }

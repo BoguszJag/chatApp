@@ -51,12 +51,48 @@
   animation: spin-animation 1.5s linear infinite;
 }
 
+@keyframes sidepanel-expand {
+  from {
+    grid-template-columns: 0% 100%;
+  }
+
+  to {
+    grid-template-columns: 100% 0%;
+  }
+}
+
+@keyframes sidepanel-collapse {
+  from {
+    grid-template-columns: 100% 0%;
+  }
+
+  to {
+    grid-template-columns: 0% 100%;
+  }
+}
+
+.expand {
+  animation: sidepanel-expand 1s forwards;
+}
+
+.shrink {
+  animation: sidepanel-collapse 1s forwards;
+}
+
+.grid-anim {
+  transition: grid-template-columns 1s;
+}
+
 .sidepanel-hide {
   grid-template-columns: 0% 100%;
 }
 
 .sidepanel-show {
   grid-template-columns: 100% 0%;
+}
+
+.b-transition {
+  transition: all 0.5s linear;
 }
 
 .oswald-300 {
