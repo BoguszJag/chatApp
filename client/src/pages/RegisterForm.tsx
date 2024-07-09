@@ -74,7 +74,7 @@ function RegisterForm() {
         <FormInput inputName={'password'} inputType={'password'} inputValue={input.password} placeholder='Password' onChange={handleChange} />
         <FormInput inputName={'confirmPassword'} inputType={'password'} inputValue={input.confirmPassword} placeholder='Confirm Password' onChange={handleChange} />
         {credentialsError && <p className='px-5 pb-5 mx-5 text-red-600'>{credentialsError}</p>}
-        <FormButton buttonText='Register' action='/register' onClick={handleSubmit}/>
+        <FormButton buttonText='Sign up' action='/register' onClick={handleSubmit}/>
         <div className='mt-auto mb-5 mx-5'>
           <p>Already have an account?</p>
           <Link to={`/login`} className='font-bold flex justify-center'>Login!</Link>
