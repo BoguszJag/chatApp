@@ -4,7 +4,7 @@ import useAuth from '../hooks/useAuthContext';
 import useSocket from '../hooks/useSocketContext';
 
 function ChatBottomBar() {
-  const {chat} = useChat();
+  const {chat, chatLoading} = useChat();
   const {auth} = useAuth();
   const [input, setInput] = useState('');
   const [msg, setMsg] = useState<text>();
@@ -64,8 +64,8 @@ function ChatBottomBar() {
 
   return (
     <div ref={divRef} className='flex flex-row mt-auto justify-normal items-center w-full h-[39px] rounded-3xl'>
-      <input disabled={!chat ? true : false} className='w-5/6 h-10 px-5 placholder-gray-400 bg-[#282b30] focus:outline-none rounded-bl-3xl' type="text" value={input} onChange={(e) => handleInput(e)} placeholder='Type a message...'/>
-      <button disabled={!chat ? true : false} className={'w-1/6 h-10 border-l border-[#2f3136] rounded-br-3xl bg-[#282b30] overflow-hidden ' + (!chat ? null : 'hover:bg-[#40444b] hover:rounded-br-3xl')} onClick={sendMessage}>Send</button>
+      <input disabled={!chat || chatLoading ? true : false} className='w-5/6 h-10 px-5 placholder-gray-400 bg-[#282b30] focus:outline-none rounded-bl-3xl' type="text" value={input} onChange={(e) => handleInput(e)} placeholder='Type a message...'/>
+      <button disabled={!chat || chatLoading ? true : false} className={'w-1/6 h-10 border-l border-[#2f3136] rounded-br-3xl bg-[#282b30] overflow-hidden ' + (!chat ? null : 'hover:bg-[#40444b] hover:rounded-br-3xl')} onClick={sendMessage}>Send</button>
     </div>
   )
 }
