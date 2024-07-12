@@ -35,11 +35,11 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           .then(res => {{
             setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); 
             setChatLoading(false);  
-            socket.emit('join', res.chatID)
+            socket.emit('join', res.chatID);
           }})
           .then(res => {
             return () => {
-              getChat(contactID, contactName)
+              getChat(contactID, contactName);
             }});
 
           if(contactsChats) {
@@ -57,7 +57,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
         } catch(err) {
           console.log(err);
         }; 
-        };
+      };
   };
 
   async function getMessages() {
@@ -112,11 +112,11 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
     if(auth === null) {
       setMessages(null);
       setChat(null);
-    }
+    };
   }, [auth]);
 
   return (
-    <ChatContext.Provider value={{ getChat, chat, setChat, messages, getMessages, chatLoading }}>
+    <ChatContext.Provider value={{ getChat, chat, setChat, messages, getMessages, chatLoading, setChatLoading }}>
         {children}
     </ChatContext.Provider>
   )
