@@ -1,4 +1,5 @@
 import React from 'react'
+import useChat from '../hooks/useChatContext';
 
 type props = {
     currentSidepanelState: string,
@@ -6,12 +7,21 @@ type props = {
 };
 
 function SidePanelButton({currentSidepanelState, handleSidepanelState}: props) {
+    const {setChatLoading} = useChat();
 
     const handleClick = () => {
         if(currentSidepanelState === 'hide') {
             handleSidepanelState('show');
+            setChatLoading(true);
+            setTimeout(() => {
+                setChatLoading(false);
+            }, 1000);
         } else {
             handleSidepanelState('hide');
+            setChatLoading(true);
+            setTimeout(() => {
+                setChatLoading(false);
+            }, 1000);
         };
     };
 
