@@ -21,5 +21,6 @@ export type ChatContextType = {
     getChat: (contactID: string, contactName: string) => Promise<void>,
     messages: msg[] | null,
     getMessages: () => Promise<void>,
-    chatLoading: boolean
+    chatLoading: boolean,
+    setChatLoading: React.Dispatch<React.SetStateAction<boolean>>,
 }
