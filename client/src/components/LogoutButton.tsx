@@ -24,6 +24,7 @@ function LogoutButton() {
           socket.disconnect();
           setAuth(null);
           navigate('/login');
+          window.location.reload();
     
         } catch(err) {
           console.log(err);
