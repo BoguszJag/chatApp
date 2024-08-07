@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import useChat from '../hooks/useChatContext'
 import useAuth from '../hooks/useAuthContext';
 import useSocket from '../hooks/useSocketContext';
+import CryptoJS from 'crypto-js';
 
 function ChatBottomBar() {
   const {chat, chatLoading} = useChat();
@@ -37,7 +38,13 @@ function ChatBottomBar() {
     setInput('');
 
     if(text.length > 0) {
-      const msgObj = {chat: chat?.ID, contactID: chat?.contact, sender_id: auth?.id, date: currentDate, msg_text: text};  
+      let message = text;
+
+      if(auth) {
+        message = CryptoJS.AES.encrypt(message, auth.id).toString();
+      };
+
+      const msgObj = {chat: chat?.ID, contactID: chat?.contact, sender_id: auth?.id, date: currentDate, msg_text: message};  
       setMsg(msgObj);
     }
   };
