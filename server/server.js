@@ -98,9 +98,6 @@ io.on('connection', (socket) => {
             console.log(err);
         };
     });
-
-    // socket.on('disconnect', () => {
-    // });
 });
 
 app.post('/api/register', async (req, res) => {
@@ -257,7 +254,7 @@ app.post('/api/getChat', async (req, res) => {
         const result = checkIfChatExists.rows;
         if(result.length == 0) {
             try {
-                await db.query(`CREATE TABLE ${chatID_1} (msg_id SERIAL PRIMARY KEY, sender_id varchar(100) NOT NULL, date varchar(30), msg_text varchar(1000) NOT NULL)`);
+                await db.query(`CREATE TABLE ${chatID_1} (msg_id SERIAL PRIMARY KEY, sender_id varchar(100) NOT NULL, date varchar(30), msg_text varchar NOT NULL)`);
                 const chat = await db.query(`SELECT * FROM ${chatID_1}`);
                 res.json({chat: chat.rows});
             } catch (err) {
