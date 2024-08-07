@@ -3,6 +3,7 @@ import useAuth from '../hooks/useAuthContext';
 import { ChatContextType, chatType, msg } from '../@types/ChatContext';
 import useSocket from '../hooks/useSocketContext';
 import useContactsChats from '../hooks/useContactsChatsContext';
+import CryptoJS from 'crypto-js';
 
 const ChatContext = createContext<ChatContextType | null>(null);
 
@@ -33,8 +34,13 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           })
           .then(res => res.json())
           .then(res => {{
+            res.chat.forEach((msg: msg) => {
+              const bytes = CryptoJS.AES.decrypt(msg.msg_text, msg.sender_id);
+              msg.msg_text = bytes.toString(CryptoJS.enc.Utf8);
+            });
+            
             setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); 
-            setChatLoading(false);  
+            setChatLoading(false); 
             socket.emit('join', res.chatID);
           }})
           .then(res => {
@@ -73,7 +79,13 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           body: JSON.stringify({sender_id: auth?.id, contactID: chat.contact})
         })
         .then(res => res.json())
-        .then(res => setMessages(res));
+        .then(res => {
+          res.forEach((msg: msg) => {
+            const bytes = CryptoJS.AES.decrypt(msg.msg_text, msg.sender_id);
+            msg.msg_text = bytes.toString(CryptoJS.enc.Utf8);
+          });
+          setMessages(res);
+        });
       
       } catch(err) {
         console.log(err);

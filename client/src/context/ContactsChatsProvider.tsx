@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import useAuth from '../hooks/useAuthContext';
 import { ContactsChat, ContactsChatsContextType } from '../@types/ContactsChatsContext';
 import useSocket from '../hooks/useSocketContext';
+import CryptoJS from 'crypto-js';
 
 const ContactsChatsContext = createContext<ContactsChatsContextType | null>(null);
 
@@ -22,7 +23,13 @@ export const ContactsChatsContextProvider: React.FC<{children: React.ReactNode}>
           body: JSON.stringify({currentUser: auth.id})
           })
           .then(res => res.json())
-          .then(res => setContactsChats(res));
+          .then(res => {
+            res.forEach((contact: ContactsChat) => {
+              const bytes = CryptoJS.AES.decrypt(contact.last_msg, contact.sender_id);
+              contact.last_msg = bytes.toString(CryptoJS.enc.Utf8);
+            });
+            setContactsChats(res);
+          });
 
         } catch(err) {
             console.log(err);
