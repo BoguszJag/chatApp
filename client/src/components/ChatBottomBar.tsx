@@ -33,7 +33,7 @@ function ChatBottomBar() {
 
   const sendMessage = () => {
     const date = new Date();
-    const currentDate = `${('0'+date.getHours()).slice(-2)}:${('0'+date.getMinutes()).slice(-2)} ${date.getFullYear()}-${(('0'+(date.getMonth()+1))).slice(-2)}-${('0'+date.getDate()).slice(-2)}`;
+    const currentDate = date.toString();
     const text = input;
     setInput('');
 
@@ -59,8 +59,8 @@ function ChatBottomBar() {
 
   useEffect(() => {
     if(msg) {
-      socket.emit('message', msg)
-    }
+      socket.emit('message', msg);
+    };
   },[msg]);
 
   useEffect(() => {
