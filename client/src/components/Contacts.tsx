@@ -7,7 +7,7 @@ import { ContactsChat } from '../@types/ContactsChatsContext';
 
 type props = {
   handleSidepanelState: React.Dispatch<React.SetStateAction<string>>
-}
+};
 
 function Contacts({handleSidepanelState}: props) {
   const [contacts, setContacts] = useState<ContactsChat[] | null>(null);
