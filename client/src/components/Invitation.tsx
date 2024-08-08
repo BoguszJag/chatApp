@@ -28,6 +28,8 @@ function Invitation({id, username, accept}: props) {
           })
           .then(res => res.json());
 
+          getInvites();
+
       } catch (err) {
         console.log(err);
       };
