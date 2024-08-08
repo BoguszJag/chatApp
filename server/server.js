@@ -254,9 +254,9 @@ app.post('/api/getChat', async (req, res) => {
         const result = checkIfChatExists.rows;
         if(result.length == 0) {
             try {
-                await db.query(`CREATE TABLE ${chatID_1} (msg_id SERIAL PRIMARY KEY, sender_id varchar(100) NOT NULL, date varchar(30), msg_text varchar NOT NULL)`);
+                await db.query(`CREATE TABLE ${chatID_1} (msg_id SERIAL PRIMARY KEY, sender_id varchar(100) NOT NULL, date varchar, msg_text varchar NOT NULL)`);
                 const chat = await db.query(`SELECT * FROM ${chatID_1}`);
-                res.json({chat: chat.rows});
+                res.json({chatID: chatID_1, chat: chat.rows, contact: contactID});
             } catch (err) {
                 console.log(err);
             };        
