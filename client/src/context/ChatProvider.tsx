@@ -15,8 +15,7 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
   const {contactsChats, setContactsChats} = useContactsChats();
   const [chatLoading, setChatLoading] = useState(false);
 
-  async function getChat(contactID: string, contactName: string) {
-
+  async function getChat(contactUid: string, contactName: string) {
     socket.emit('leave', chat?.ID);
 
     if(auth) {
@@ -30,27 +29,37 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           'Content-Type': 'application/json',
           'Accept': 'application/json'
           },
-          body: JSON.stringify({currentUserID: auth.id, contactID: contactID})
+          body: JSON.stringify({currentUserID: auth.id, contactID: contactUid})
           })
           .then(res => res.json())
-          .then(res => {{
-            res.chat.forEach((msg: msg) => {
-              const bytes = CryptoJS.AES.decrypt(msg.msg_text, msg.sender_id);
-              msg.msg_text = bytes.toString(CryptoJS.enc.Utf8);
-            });
-            
+          .then(res => {
             setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); 
             setChatLoading(false); 
             socket.emit('join', res.chatID);
-          }})
+          })
           .then(res => {
             return () => {
-              getChat(contactID, contactName);
-            }});
+              getChat(contactUid, contactName);
+            }
+          })
+          // .then(res => {{
+          //   res.chat.forEach((msg: msg) => {
+          //     const bytes = CryptoJS.AES.decrypt(msg.msg_text, msg.sender_id);
+          //     msg.msg_text = bytes.toString(CryptoJS.enc.Utf8);
+          //   });
+            
+          //   setChat({ID: res.chatID, messages: res.chat, contact: res.contact, contactName: contactName}); 
+          //   setChatLoading(false); 
+          //   socket.emit('join', res.chatID);
+          // }})
+          // .then(res => {
+          //   return () => {
+          //     getChat(contactUid, contactName);
+          //   }});
 
           if(contactsChats) {
             for(let i = 0; i < contactsChats.length; i++) {
-              if(contactsChats[i].id === contactID) {
+              if(contactsChats[i].userInfo.uid === contactUid) {
                 setContactsChats((prev) => {
                   if (prev) { 
                     return [...prev.slice(0,i), {...prev[i], displayed: true}, ...prev.slice(i+1)] 
@@ -79,13 +88,14 @@ export const ChatContextProvider: React.FC<{children: React.ReactNode}> = ({chil
           body: JSON.stringify({sender_id: auth?.id, contactID: chat.contact})
         })
         .then(res => res.json())
-        .then(res => {
-          res.forEach((msg: msg) => {
-            const bytes = CryptoJS.AES.decrypt(msg.msg_text, msg.sender_id);
-            msg.msg_text = bytes.toString(CryptoJS.enc.Utf8);
-          });
-          setMessages(res);
-        });
+        .then(res => setMessages(res))
+        // .then(res => {
+        //   res.forEach((msg: msg) => {
+        //     const bytes = CryptoJS.AES.decrypt(msg.msg_text, msg.sender_id);
+        //     msg.msg_text = bytes.toString(CryptoJS.enc.Utf8);
+        //   });
+          
+        // });
       
       } catch(err) {
         console.log(err);
