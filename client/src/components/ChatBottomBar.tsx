@@ -40,9 +40,9 @@ function ChatBottomBar() {
     if(text.length > 0) {
       let message = text;
 
-      if(auth) {
-        message = CryptoJS.AES.encrypt(message, auth.id).toString();
-      };
+      // if(auth) {
+      //   message = CryptoJS.AES.encrypt(message, auth.id).toString();
+      // };
 
       const msgObj = {chat: chat?.ID, contactID: chat?.contact, sender_id: auth?.id, date: currentDate, msg_text: message};  
       setMsg(msgObj);
