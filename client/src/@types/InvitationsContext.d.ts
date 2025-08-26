@@ -1,9 +1,9 @@
 // @types.InvitationsContext.ts
 
 export type Invites = {
-    receivedInvites: Array<{id: string, username: string}>,
-    sentInvites: Array<{id: string, username: string}>,
-    contacts: Array<{id: string}>
+    receivedInvites: Array<{id: string, invitation_sender: string, sender_username: string}>,
+    sentInvites: Array<{id: string, invitation_receiver: string, receiver_username: string}>,
+    contacts: Array<{uid: string, username: string}>
 };
 
 export type InvitationsContextType = {

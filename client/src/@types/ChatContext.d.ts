@@ -2,10 +2,10 @@
 import React from "react";
 
 export type msg = {
-        msg_id: string,
+        id: string,
         sender_id: string,
         date: string,
-        msg_text: string
+        text: string
     }
 
 export type chatType = {

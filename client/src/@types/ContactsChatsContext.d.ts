@@ -1,12 +1,16 @@
 // @types.ContactsChatsContext.ts
 
 export type ContactsChat = {
-    id: string,
-    username: string,
-    last_msg: string,
-    sender_id: string,
-    displayed: boolean,
-    msg_date: string
+    userInfo: {
+        uid: string,
+        username: string
+    },
+    lastMessage: {
+        text: string,
+        date: string,
+        senderId: string,
+        displayed: boolean
+    },
 };
 
 export type ContactsChatsContextType = {
