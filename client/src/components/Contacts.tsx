@@ -20,11 +20,11 @@ function Contacts({handleSidepanelState}: props) {
       <SearchContacts handleInputChange={setInputChange} handleUsers={setContacts} apiRoute={null}/>
       <div className='pl-[10px] overflow-y-scroll overflow-x-hidden scrollbar'>
           {contacts && inputChange.length > 0 && contacts.map(contact => {
-            return <Contact key={contact['id']} id={contact['id']} username={contact['username']} lastMessage={contact['last_msg']} senderID={contact['sender_id']} isDisplayed={contact['displayed']} handleChat={getChat} handleSidepanelState={handleSidepanelState}/>
+            return <Contact key={contact.userInfo.uid} uid={contact.userInfo.uid} username={contact.userInfo.username} lastMessage={contact.lastMessage ? contact.lastMessage.text : null} senderID={contact.lastMessage ? contact.lastMessage.senderId : null} isDisplayed={contact.lastMessage ? contact.lastMessage.displayed : null} handleChat={getChat} handleSidepanelState={handleSidepanelState}/>
           })}
         
-          {contactsChats && contactsChats.length > 0 && inputChange.length === 0 ? contactsChats.sort((a,b) => {return new Date(b.msg_date).getTime() - new Date(a.msg_date).getTime()}).map(contact => {
-            return <Contact key={contact['id']} id={contact['id']} username={contact['username']} lastMessage={contact['last_msg']} senderID={contact['sender_id']} isDisplayed={contact['displayed']} handleChat={getChat} handleSidepanelState={handleSidepanelState}/>}) : null }
+          {contactsChats && contactsChats.length > 0 && inputChange.length === 0 ? contactsChats.sort((a,b) => {return new Date(b.lastMessage.date).getTime() - new Date(a.lastMessage.date).getTime()}).map(contact => {
+            return <Contact key={contact.userInfo.uid} uid={contact.userInfo.uid} username={contact.userInfo.username} lastMessage={contact.lastMessage ? contact.lastMessage.text : null} senderID={contact.lastMessage ? contact.lastMessage.senderId : null} isDisplayed={contact.lastMessage ? contact.lastMessage.displayed : null} handleChat={getChat} handleSidepanelState={handleSidepanelState}/>}) : null }
       </div>
     </div>
   )
