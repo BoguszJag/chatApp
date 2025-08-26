@@ -6,11 +6,12 @@ import useInvitations from '../hooks/useInvitationsContext'
 
 type props = {
     id: string,
+    userId: string,
     username: string,
     accept: boolean
 }
 
-function Invitation({id, username, accept}: props) {
+function Invitation({id, username, userId, accept}: props) {
   const {auth} = useAuth();
   const {getInvites} = useInvitations();
 
@@ -24,7 +25,7 @@ function Invitation({id, username, accept}: props) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
           },
-          body: JSON.stringify({currentUser: auth.id, target: id})
+          body: JSON.stringify({id: id})
           })
           .then(res => res.json());
 
@@ -46,7 +47,7 @@ function Invitation({id, username, accept}: props) {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
           },
-          body: JSON.stringify({currentUserID: auth.id, currentUserName: auth.username, targetID: id, targetName: username})
+          body: JSON.stringify({inviteId: id, currentUserId: auth.id, currentUserName: auth.username, targetName: username, targetId: userId})
           })
           .then(res => res.json());
 
