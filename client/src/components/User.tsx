@@ -4,14 +4,14 @@ type props = {
     id: string,
     username: string,
     invited: boolean,
-    invite: (receiver: string) => void
+    invite: (receiver: string, username: string) => void
 };
 
 function User({id, username, invited, invite}: props) {
     const [invitedState, setInvitedState] = useState(invited);
 
     function handleClick() {
-        invite(id);
+        invite(id, username);
         setInvitedState(!invitedState);
     };
 
