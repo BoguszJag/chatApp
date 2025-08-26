@@ -14,7 +14,7 @@ function AddContacts() {
         await getInvites();
     };
 
-    async function sendInvite(receiver: string) {
+    async function sendInvite(receiver: string, username: string) {
         await checkAuth();
         if(auth) {
             try {
@@ -25,7 +25,7 @@ function AddContacts() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
                 },
-                body: JSON.stringify({sender: auth.id, receiver: receiver})
+                body: JSON.stringify({sender: auth.id, senderName: auth.username, receiver: receiver, receiverName: username})
                 })
                 .then(res => res.json());
         
@@ -48,9 +48,9 @@ function AddContacts() {
             {users && inputChange.length > 0 && users.map(user => {
                 if(auth && user['id'] === auth['id']) { 
                     return null;
-                } else if((invites && invites.receivedInvites.some((e:{id: string}) => e.id === user['id'])) 
-                    || (invites && invites.sentInvites.some((e:{id: string}) => e.id === user['id'])) 
-                    || (invites && invites.contacts.some((e:{id: string}) => e.id === user['id']))) {
+                } else if((invites && invites.receivedInvites.some((e:{invitation_sender: string}) => e.invitation_sender === user['id'])) 
+                    || (invites && invites.sentInvites.some((e:{invitation_receiver: string}) => e.invitation_receiver === user['id'])) 
+                    || (invites && invites.contacts.some((e:{uid: string}) => e.uid === user['id']))) {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={true} />
                 } else {
                     return <User key={user['id']} id={user['id']} username={user['username']} invite={sendInvite} invited={false} />
