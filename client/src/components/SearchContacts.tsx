@@ -47,7 +47,7 @@ function SearchContacts({handleInputChange, handleUsers, apiRoute}: props) {
             };
         } else if(contactsChats && contactsChats.length > 0) {
             const search = contactsChats?.filter((contact) => {
-                if(contact.username.slice(0, input.length).includes(input)) // Case sensitive
+                if(contact.userInfo.username.slice(0, input.length).includes(input)) // Case sensitive
                     return true;  
             })
             if(!search) {
