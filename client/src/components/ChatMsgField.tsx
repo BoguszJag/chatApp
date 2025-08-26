@@ -89,7 +89,7 @@ function ChatMsgField() {
       {chatLoading ? <div className='h-full w-full flex flex-col items-center justify-center l'><div className='loading-spinner'></div></div> : null}
       {!chatLoading && messages ? messages.map((message) => {
         return (
-          <Message key={message.msg_id} msgID={message.msg_id} msgSenderID={message.sender_id} msgDate={message.date} msgText={message.msg_text} />
+          <Message key={message.id} msgID={message.id} msgSenderID={message.sender_id} msgDate={message.date} msgText={message.text} />
         )
       }) : null}
       <div ref={scrollDiv}></div>
